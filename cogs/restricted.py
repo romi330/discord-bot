@@ -2,7 +2,6 @@ import os
 import time
 import discord
 from discord.ext import commands
-from main import version
 
 admins = [445899149997768735]  # Replace with your Discord user ID
 
@@ -67,22 +66,6 @@ class Restricted(commands.Cog):
 
     @commands.command()
     @developer_only()
-    async def setstatus(self, ctx, *, message=None):
-        if not message:
-            await ctx.author.send("Please provide a status message. Example: `x!setstatus Playing Game`")
-            return
-
-        if message.lower() == "clear":
-            await self.bot.change_presence(
-                activity=discord.Streaming(name=f"{version} | /paul", url="https://twitch.tv/romi330"))
-            await ctx.author.send("Bot status cleared.")
-        else:
-            await self.bot.change_presence(
-                activity=discord.Streaming(name=message, url="https://twitch.tv/romi330"))
-            await ctx.author.send(f"Bot status set to: {message}")
-
-    @commands.command()
-    @developer_only()
     async def leave(self, ctx, guild_id: int):
         guild = self.bot.get_guild(guild_id)
         if guild is None:
@@ -99,10 +82,11 @@ class Restricted(commands.Cog):
             await ctx.author.send("The bot is not in a server with that ID.")
             return
 
-        embed = discord.Embed(title=guild.name, color=discord.Color.blurple())
+        embed = discord.Embed(title=f"Server Information - {guild.name}", color=discord.Color.blurple())
         embed.add_field(name="Server ID", value=guild.id, inline=False)
         embed.add_field(name="Member Count", value=guild.member_count, inline=False)
         embed.add_field(name="Created At", value=guild.created_at.strftime("%Y-%m-%d %H:%M:%S"), inline=False)
+        embed.set_thumbnail(url=guild.icon.url if guild.icon else None)
         await ctx.author.send(embed=embed)
 
     @commands.command()
@@ -115,7 +99,6 @@ class Restricted(commands.Cog):
                 "**-** x!helpdev\n"
                 "**-** x!servers\n"
                 "**-** x!stats\n"
-                "**-** x!setstatus <clear>/<message>\n"
                 "**-** x!announce <message>\n"
                 "**-** x!leave <guild_id>\n"
                 "**-** x!serverinfo <guild_id>\n"

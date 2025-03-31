@@ -10,26 +10,34 @@ from discord.app_commands import CommandOnCooldown
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-version = "v3.8"
+version = "v3.9"
 intents = discord.Intents.default()
 intents.message_content = True # Required for on_message, feedback, and modmail (privileged)
 client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)
 log_channel = 1353416165350834278
 load_dotenv()
 
-sp = spotipy.Spotify(auth_manager=SpotifyOAuth(
+sp_oauth = SpotifyOAuth(
     client_id=os.getenv("SPOTIPY_CLIENT_ID"),
     client_secret=os.getenv("SPOTIPY_CLIENT_SECRET"),
     redirect_uri="http://localhost:8888/callback",
     scope="user-library-read user-read-playback-state user-read-currently-playing"
-))
+)
+
+sp = spotipy.Spotify(auth_manager=sp_oauth)
+
+def refresh_token():
+    token_info = sp_oauth.get_cached_token()
+    if token_info and sp_oauth.is_token_expired(token_info):
+        new_token = sp_oauth.refresh_access_token(token_info["refresh_token"])
+        return new_token["access_token"]
+    return token_info["access_token"]
 
 async def send_dm(user, message):
     try:
         await user.send(message)
     except discord.Forbidden:
         print("I do not have permission to send DMs to this user.")
-
 
 @client.event
 async def on_ready():
@@ -75,26 +83,33 @@ async def on_ready():
     print("\nBot is ready and operational!")
 
 async def update_spotify_activity():
+    global sp
     while True:
-        current_playback = sp.current_playback()
+        try:
+            sp = spotipy.Spotify(auth_manager=sp_oauth)
+            current_playback = sp.current_playback()
 
-        if current_playback and current_playback.get('is_playing'):
-            track_name = current_playback['item']['name']
-            artist_name = current_playback['item']['artists'][0]['name']
+            if current_playback and current_playback.get('is_playing') and current_playback.get('item'):
+                track_name = current_playback['item']['name']
+                artist_name = current_playback['item']['artists'][0]['name']
 
-            activity = discord.Activity(
-                type=discord.ActivityType.streaming,
-                name=f'{track_name}',
-                details=f'Listening to {track_name}',
-                state=f'by {artist_name}',
-                url="https://twitch.tv/romi330"
-            )
+                activity = discord.Activity(
+                    type=discord.ActivityType.streaming,
+                    name=track_name,
+                    details=f'Listening to {track_name}',
+                    state=f'by {artist_name}',
+                    url="https://twitch.tv/romi330"
+                )
+            else:
+                activity = discord.Streaming(name=f"{version} | /paul", url="https://twitch.tv/romi330")
 
             await client.change_presence(activity=activity)
-        else:
-            await client.change_presence(activity=discord.Streaming(name=f"{version} | /paul", url="https://twitch.tv/romi330"))
+            await asyncio.sleep(10)
 
-        await asyncio.sleep(10)
+        except Exception as e:
+            print(f"Error updating Spotify activity: {e}")
+            traceback.print_exc()
+            await asyncio.sleep(30)
 
 @client.event
 async def on_message(message):
