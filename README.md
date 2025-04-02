@@ -1,6 +1,86 @@
-# Paul Bot
-Paul is a powerful yet easy-to-use verified Discord bot designed with simplicity at its core. From the moment you invite Paul to your server, it seamlessly integrates and begins functioning without any complicated setup—no hassle, no confusion. Whether you're looking for advanced AutoMod features, Clash of Clans integration, or just a reliable moderation assistant, Paul handles everything effortlessly.  
+# Paul - The Powerful Yet Simple Discord Bot
 
-With a focus on server customization, Paul allows administrators to fine-tune AutoMod settings using Discord’s built-in API while keeping configurations easily manageable through a JSON-based system. The bot ensures that each server can tailor its moderation rules to fit its unique needs without sacrificing usability.  
+[![Discord Server](https://img.shields.io/discord/1287203499276242969?label=Discord&logo=discord)](https://discord.com/invite/5Y3XkJXjHz)  [![Invite Paul](https://img.shields.io/badge/Invite-Paul%20Bot-blue?style=flat&logo=discord)](https://discord.com/oauth2/authorize?client_id=1249144690461118627)  [![GitHub Repository](https://img.shields.io/github/stars/your-repo?style=social)](https://github.com/romi330/paul)
 
-Paul isn’t just another bot—it’s a smart, adaptable, and efficient tool designed to keep your community safe and engaged, all while requiring minimal effort on your part. Just add Paul, and it works. No questions asked.
+---
+
+## 🤖 About Paul
+
+**Paul** is a powerful yet easy-to-use verified Discord bot designed with simplicity at its core. From the moment you invite Paul to your server, it seamlessly integrates and begins functioning without any complicated setup—**no hassle, no confusion.**
+
+Whether you're looking for:
+- 🚨 **Advanced AutoMod Features**
+- 🏆 **Clash of Clans Integration**
+- 🛠️ **Reliable Moderation Assistant**  
+  
+**Paul handles everything effortlessly.**
+
+---
+
+## ⚙️ Features
+
+✅ **Seamless AutoMod:** Uses Discord’s built-in AutoMod API for efficient moderation.  
+✅ **JSON-Based Customization:** Easily fine-tune AutoMod settings per server.  
+✅ **Clash of Clans Support:** Fetch stats, manage clans, and more!  
+✅ **Instant Setup:** No complex configuration—just invite and go!  
+✅ **Verified & Secure:** Built with best practices to ensure safety and reliability.
+
+---
+
+## 🚀 Getting Started
+
+### **1️⃣ Invite Paul to Your Server**
+Click the button below to get started:
+
+[![Invite Paul](https://img.shields.io/badge/Invite-Paul%20Bot-blue?style=flat&logo=discord)](https://discord.com/oauth2/authorize?client_id=1249144690461118627)
+
+### **2️⃣ Configure AutoMod (Optional)**
+Paul works out of the box, but you can customize AutoMod settings using JSON for a tailored experience.
+
+### **3️⃣ Enjoy!**
+Let Paul take care of moderation and integrations while you focus on your community.
+
+---
+
+## 📜 Commands Overview
+
+### 🛠️ **Moderation**
+```
+/ban @user - Ban a user from the server
+/kick @user - Kick a user from the server
+/timeout @user - Mute a user temporarily
+/purge # - Delete messages, up to 500
+```
+
+### 🎮 **Clash of Clans**
+```
+/clan #TAG - Get details about a Clash of Clans clan
+/player #TAG - Fetch stats of a specific player
+```
+
+### 🎭 **Fun & Utility**
+```
+/pfp @user - Get a high-resolution avatar of a user
+/ping - Check the bot's latency
+```
+
+*(More commands available—use `/help` in Discord!)*
+
+---
+
+## 🛠️ Developer & Support
+
+📜 **GitHub:** [Paul Bot Repository](https://github.com/romi330/paul)  
+🌍 **Website:** [www.ronenlaz.com](https://www.ronenlaz.com)  
+💬 **Discord Support:** [Join our Discord](https://discord.com/invite/5Y3XkJXjHz)
+
+---
+
+## ⭐ Contribute & Support
+If you love Paul, consider giving it a ⭐ on GitHub! Your support helps keep this bot updated and maintained.
+
+[![GitHub Repository](https://img.shields.io/github/stars/your-repo?style=social)](https://github.com/ronen/paul)
+
+---
+
+© 2025 Ronen Lazowski - This repository is licensed under the [GPLv3 License](https://github.com/romi330/paul/blob/main/LICENSE).
