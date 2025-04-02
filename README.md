@@ -83,4 +83,4 @@ If you love Paul, consider giving it a ⭐ on GitHub! Your support helps keep th
 
 ---
 
-© 2025 Ronen Lazowski - This repository is licensed under the [GPLv3 License](https://github.com/romi330/paul/blob/main/LICENSE).
+Copyright © 2025 Ronen Lazowski - This repository is licensed under the [GPLv3 License](https://github.com/romi330/paul/blob/main/LICENSE).
