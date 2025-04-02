@@ -1,6 +1,6 @@
 # Paul - The Powerful Yet Simple Discord Bot
 
-[![Discord Server](https://img.shields.io/discord/1287203499276242969?label=Discord&logo=discord)](https://discord.com/invite/5Y3XkJXjHz)  [![Invite Paul](https://img.shields.io/badge/Invite-Paul%20Bot-blue?style=flat&logo=discord)](https://discord.com/oauth2/authorize?client_id=1249144690461118627)  [![GitHub Repository](https://img.shields.io/github/stars/your-repo?style=social)](https://github.com/ronenlazowski/paul)
+[![Discord Server](https://img.shields.io/discord/1287203499276242969?label=Discord&logo=discord)](https://discord.com/invite/8hYZUtUxme)  [![Invite Paul](https://img.shields.io/badge/Invite-Paul%20Bot-blue?style=flat&logo=discord)](https://discord.com/oauth2/authorize?client_id=1249144690461118627)  [![GitHub Repository](https://img.shields.io/github/stars/your-repo?style=social)](https://github.com/ronenlazowski/paul)
 
 ---
 
@@ -72,7 +72,7 @@ Let Paul take care of moderation and integrations while you focus on your commun
 
 📜 **GitHub:** [Paul Bot Repository](https://github.com/ronenlazowski/paul)  
 🌍 **Website:** [www.ronenlaz.com](https://www.ronenlaz.com)  
-💬 **Discord Support:** [Join our Discord](https://discord.com/invite/5Y3XkJXjHz)
+💬 **Discord Support:** [Join our Discord](https://discord.com/invite/8hYZUtUxme)
 
 ---
 
