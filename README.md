@@ -1,6 +1,6 @@
 # Paul - The Powerful Yet Simple Discord Bot
 
-[![Discord Server](https://img.shields.io/discord/1287203499276242969?label=Discord&logo=discord)](https://discord.com/invite/5Y3XkJXjHz)  [![Invite Paul](https://img.shields.io/badge/Invite-Paul%20Bot-blue?style=flat&logo=discord)](https://discord.com/oauth2/authorize?client_id=1249144690461118627)  [![GitHub Repository](https://img.shields.io/github/stars/your-repo?style=social)](https://github.com/romi330/paul)
+[![Discord Server](https://img.shields.io/discord/1287203499276242969?label=Discord&logo=discord)](https://discord.com/invite/5Y3XkJXjHz)  [![Invite Paul](https://img.shields.io/badge/Invite-Paul%20Bot-blue?style=flat&logo=discord)](https://discord.com/oauth2/authorize?client_id=1249144690461118627)  [![GitHub Repository](https://img.shields.io/github/stars/your-repo?style=social)](https://github.com/ronenlazowski/paul)
 
 ---
 
@@ -70,7 +70,7 @@ Let Paul take care of moderation and integrations while you focus on your commun
 
 ## 🛠️ Developer & Support
 
-📜 **GitHub:** [Paul Bot Repository](https://github.com/romi330/paul)  
+📜 **GitHub:** [Paul Bot Repository](https://github.com/ronenlazowski/paul)  
 🌍 **Website:** [www.ronenlaz.com](https://www.ronenlaz.com)  
 💬 **Discord Support:** [Join our Discord](https://discord.com/invite/5Y3XkJXjHz)
 
@@ -79,8 +79,8 @@ Let Paul take care of moderation and integrations while you focus on your commun
 ## ⭐ Contribute & Support
 If you love Paul, consider giving it a ⭐ on GitHub! Your support helps keep this bot updated and maintained.
 
-[![GitHub Repository](https://img.shields.io/github/stars/your-repo?style=social)](https://github.com/ronen/paul)
+[![GitHub Repository](https://img.shields.io/github/stars/your-repo?style=social)](https://github.com/ronenlazowski/paul)
 
 ---
 
-Copyright © 2025 Ronen Lazowski - This repository is licensed under the [GPLv3 License](https://github.com/romi330/paul/blob/main/LICENSE).
+Copyright © 2025 Ronen Lazowski - This repository is licensed under the [GPLv3 License](https://github.com/ronenlazowski/paul/blob/main/LICENSE).
