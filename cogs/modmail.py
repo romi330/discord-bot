@@ -55,7 +55,7 @@ class ModmailModal(ui.Modal):
         else:
             await interaction.response.send_message("Modmail system has not been set up for this server.", ephemeral=True)
 
-class ModmailCog(commands.Cog):
+class Modmail(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -74,4 +74,4 @@ class ModmailCog(commands.Cog):
         await interaction.response.send_modal(modal)
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(ModmailCog(bot))
+    await bot.add_cog(Modmail(bot))

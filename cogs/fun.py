@@ -33,7 +33,7 @@ def get_clan_info(clan_tag):
     return None
 
 
-class fun(commands.Cog):
+class Fun(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
@@ -106,4 +106,4 @@ class fun(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(fun(bot))
+    await bot.add_cog(Fun(bot))
