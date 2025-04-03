@@ -2,7 +2,6 @@ import asyncio
 import os
 import traceback
 from dotenv import load_dotenv
-import random
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -10,9 +9,9 @@ from discord.app_commands import CommandOnCooldown
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
-version = "v3.9"
+version = "v4.8"  # Update this version number for each release
 intents = discord.Intents.default()
-intents.message_content = True # Required for on_message, feedback, and modmail (privileged)
+intents.message_content = True  # Required for on_message, feedback, and modmail (privileged)
 client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)
 log_channel = 1353416165350834278
 load_dotenv()
@@ -32,12 +31,6 @@ def refresh_token():
         new_token = sp_oauth.refresh_access_token(token_info["refresh_token"])
         return new_token["access_token"]
     return token_info["access_token"]
-
-async def send_dm(user, message):
-    try:
-        await user.send(message)
-    except discord.Forbidden:
-        print("I do not have permission to send DMs to this user.")
 
 @client.event
 async def on_ready():
@@ -101,7 +94,7 @@ async def update_spotify_activity():
                     url="https://twitch.tv/romi330"
                 )
             else:
-                activity = discord.Streaming(name=f"{version} | /paul", url="https://twitch.tv/romi330")
+                activity = discord.Streaming(name=f"{version} | /help", url="https://twitch.tv/romi330")
 
             await client.change_presence(activity=activity)
             await asyncio.sleep(10)
@@ -117,12 +110,7 @@ async def on_message(message):
         return
 
     if message.content.strip() == client.user.mention:
-        if random.random() > 0.9999:
-            await message.channel.send("<a:peepoclown:1353784183092416686>")
-            user = await client.fetch_user('445899149997768735')
-            await send_dm(user, "peepo happened!")
-        else:
-            await message.channel.send(":wave:")
+        await message.channel.send(":wave:")
 
     await client.process_commands(message)
 
@@ -135,11 +123,17 @@ async def on_app_command_error(interaction: discord.Interaction, exception: app_
             cooldown_time = round(exception.retry_after, 2)
             error_message = f":hourglass: This command is on cooldown. Try again in `{cooldown_time}` seconds."
         elif isinstance(exception, (app_commands.CommandInvokeError, commands.CommandInvokeError)):
-            error_message = f":x: {str(exception).split(':')[-1]}" if ":" in str(exception) else ":x: An error occurred."
+            error_message = f"<:what_in_the_hell:1353784539264192583> {str(exception).split(':')[-1]}" if ":" in str(exception) else "<:what_in_the_hell:1353784539264192583> An error occurred."
         elif isinstance(exception, (commands.BadArgument, commands.MissingRequiredArgument)):
-            error_message = f":x: {str(exception)}"
+            error_message = f"<:what_in_the_hell:1353784539264192583> {str(exception)}"
+        elif isinstance(exception, app_commands.MissingPermissions):
+            missing_perms = ", ".join(exception.missing_permissions)
+            error_message = f"<a:peepoclown:1353784183092416686> You are missing the following permission(s): `{missing_perms}`."
+        elif isinstance(exception, app_commands.BotMissingPermissions):
+            missing_perms = ", ".join(exception.missing_permissions)
+            error_message = f"<:what_in_the_hell:1353784539264192583> I am missing the following permission(s): `{missing_perms}`. Please update my role permissions."
         else:
-            error_message = ":x: Oops, something went wrong. Please try again later."
+            error_message = "<:what_in_the_hell:1353784539264192583> Oops, something went wrong. Please try again later."
 
         try:
             await interaction.response.send_message(
@@ -167,14 +161,22 @@ async def on_command_error(ctx: commands.Context, exception: commands.CommandErr
         cooldown_time = round(exception.retry_after, 2)
         error_message = f":hourglass: This command is on cooldown. Try again in `{cooldown_time}` seconds."
     elif isinstance(exception, commands.CheckFailure):
-        error_message = ":x: You do not have permission to use this command."
+        error_message = "<a:peepoclown:1353784183092416686> You do not have permission to use this command."
     elif isinstance(exception, (commands.BadArgument, commands.MissingRequiredArgument)):
-        error_message = f":x: {str(exception)}"
+        error_message = f"<:what_in_the_hell:1353784539264192583> {str(exception)}"
+    elif isinstance(exception, commands.CommandNotFound):
+        error_message = "<:what_in_the_hell:1353784539264192583> Command not found. Please try again later."
+    elif isinstance(exception, commands.MissingPermissions):
+        missing_perms = ", ".join(exception.missing_permissions)
+        error_message = f"<a:peepoclown:1353784183092416686> You are missing the following permission(s): `{missing_perms}`."
+    elif isinstance(exception, commands.BotMissingPermissions):
+        missing_perms = ", ".join(exception.missing_permissions)
+        error_message = f"<:what_in_the_hell:1353784539264192583> I am missing the following permission(s): `{missing_perms}`. Please update my role permissions."
     else:
-        error_message = ":x: Oops, something went wrong. Please try again later."
+        error_message = "<:what_in_the_hell:1353784539264192583> Oops, something went wrong. Please try again later."
 
     try:
-        await ctx.send(embed=discord.Embed(description=error_message, color=red))
+        await ctx.send(embed=discord.Embed(description=error_message, color=red), ephemeral=True)
     except discord.HTTPException:
         pass
 
@@ -194,5 +196,6 @@ if __name__ == '__main__':
     asyncio.run(client.load_extension("cogs.feedback"))
     asyncio.run(client.load_extension("cogs.modmail"))
     asyncio.run(client.load_extension("cogs.automod"))
+    asyncio.run(client.load_extension("cogs.help"))
     load_dotenv()
     client.run(os.getenv("TOKEN"))

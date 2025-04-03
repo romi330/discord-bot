@@ -4,26 +4,30 @@ from discord.ext import commands
 from main import version
 
 
-class misc(commands.Cog):
+class Misc(commands.Cog):
 
     def __init__(self, bot):
         self.bot = bot
 
+    @commands.command(name="help", aliases=["h", "commands"], hidden=True)
+    @commands.cooldown(1,5)
+    async def help(self, ctx):
+        await ctx.send("This bot only uses slash commands, please try using `/help` instead.")
+
     @app_commands.command(description="Paul changelog and information.")
     @app_commands.checks.cooldown(1, 2)
     async def paul(self, interaction: discord.Interaction):
-        # Sends changelog and gives a bit of information about the bot.
         msg = discord.Embed(title=f"Paul Changelog and Info.", color=discord.Colour.blurple())
-        msg.add_field(name=f"Version {version} | Third Release",
-                      value="**-** **[BETA]** Paul. \n",
+        msg.add_field(name=f"Version {version} | Fourth Release",
+                      value="",
                       inline=False)
         msg.add_field(name="What's changed?",
-                      value="**-** Introducing Automod!\n"
-                            "**-** Automod is an administrator only command.\n"
-                            "**-** You can create automod rules for your server.\n")
+                      value="**-** New Help Command!\n"
+                            "**-** You can use it to give you more information about all the commands that we offer.\n")
         msg.add_field(name="What's fixed?",
-                      value="**-** Bug Squashing. :bug:\n", inline=True)
-        msg.add_field(name="Thanks for using Paul!",
+                      value="**-** Bug Squashing. :bug:\n"
+                            "**-** Finally out of beta! <a:lil_swag:1353785503539007640>\n", inline=True)
+        msg.add_field(name="Thank you for using Paul!",
                       value="**-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-**\n"
                       "Credits: `wk_killer`.\n",
                       inline=False)
@@ -51,4 +55,4 @@ class misc(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(misc(bot))
+    await bot.add_cog(Misc(bot))

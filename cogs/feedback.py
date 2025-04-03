@@ -54,7 +54,7 @@ class FeedbackModal(ui.Modal):
             await channel.send(embed=embed)
 
 
-class FeedbackCog(commands.Cog):
+class Feedback(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -66,4 +66,4 @@ class FeedbackCog(commands.Cog):
 
 
 async def setup(bot: commands.Bot):
-    await bot.add_cog(FeedbackCog(bot))
+    await bot.add_cog(Feedback(bot))
