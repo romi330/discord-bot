@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Last Updated:** 03/03/2025
+**Last Updated:** 04/04/2025
 
 ## 1. Acceptance of Terms
 By using Paul ("the Bot"), you agree to these Terms of Service. If you do not agree with any part of these terms, you must not use the Bot.
