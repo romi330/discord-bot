@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last Updated:** 03/03/2025
+**Last Updated:** 04/04/2025
 
 ## 1. Data Collection
 - Paul may collect Discord server IDs, Discord channel IDs, messages for moderation, and Clash of Clans API data to provide its services.
