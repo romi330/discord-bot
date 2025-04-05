@@ -87,14 +87,6 @@ class Moderation(commands.Cog):
             )
             await interaction.response.send_message(embed=embed, ephemeral=True)
             return
-        if amount > 100:
-            embed = discord.Embed(
-                description="<:what_in_the_hell:1353784539264192583> You are purging more than 100 messages, which may cause rate-limiting. Proceed with caution.",
-                color=discord.Color.red()
-            )
-            await interaction.response.send_message(embed=embed, ephemeral=True)
-            return
-
         try:
             await interaction.response.defer(ephemeral=True)
             deleted = await interaction.channel.purge(limit=amount)
@@ -105,7 +97,6 @@ class Moderation(commands.Cog):
                 color=discord.Color.red()
             )
             await interaction.response.send_message(embed=embed, ephemeral=True)
-
     @app_commands.command(description="Times out a user. (moderate_members)")
     @app_commands.default_permissions(moderate_members=True)
     @bot_has_permissions(moderate_members=True)
