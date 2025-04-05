@@ -32,6 +32,15 @@ class AutoMod(commands.Cog):
         else:
             self.rules = {}
 
+        for guild_id, guild_rules in self.rules.items():
+            guild_rules.setdefault("thresholds", {
+                "spam_messages": 5,
+                "spam_seconds": 10,
+                "flood_messages": 5,
+                "flood_seconds": 5,
+                "emoji_limit": 5
+            })
+
     def save_rules(self):
         with open(self.json_file, "w") as file:
             json.dump(self.rules, file, indent=4)
@@ -281,13 +290,12 @@ class AutoModMainMenu(ui.View):
             "Word Filter": "blocked_words"
         }
 
-        thresholds = self.rules.get("thresholds", {
-            "spam_messages": 5,
-            "spam_seconds": 10,
-            "flood_messages": 5,
-            "flood_seconds": 5,
-            "emoji_limit": 5
-        })
+        thresholds = self.rules.get("thresholds", {})
+        spam_messages = thresholds.get("spam_messages", 5)
+        spam_seconds = thresholds.get("spam_seconds", 10)
+        flood_messages = thresholds.get("flood_messages", 5)
+        flood_seconds = thresholds.get("flood_seconds", 5)
+        emoji_limit = thresholds.get("emoji_limit", 5)
 
         embed = Embed(
             title="🛡 Server AutoMod Status",
@@ -303,9 +311,9 @@ class AutoModMainMenu(ui.View):
         embed.add_field(name="Features", value=feature_status, inline=False)
 
         threshold_status = (
-            f"**Spam Detection**: {thresholds['spam_messages']} msgs in {thresholds['spam_seconds']}s\n"
-            f"**Flood Control**: {thresholds['flood_messages']} msgs in {thresholds['flood_seconds']}s\n"
-            f"**Emoji Limit**: {thresholds['emoji_limit']} per message"
+            f"**Spam Detection**: {spam_messages} msgs in {spam_seconds}s\n"
+            f"**Flood Control**: {flood_messages} msgs in {flood_seconds}s\n"
+            f"**Emoji Limit**: {emoji_limit} per message"
         )
         embed.add_field(name="Thresholds", value=threshold_status, inline=False)
 
