@@ -388,7 +388,7 @@ class FeatureSettingsView(ui.View):
         await self.toggle_rule(interaction, "blocked_words", "Word Filter", button)
 
     @ui.button(label="Back", style=discord.ButtonStyle.secondary)
-    async def back_button(self, interaction: discord.Interaction):
+    async def back_button(self, interaction: discord.Interaction, button: ui.Button):
         view = AutoModMainMenu(self.cog, self.guild_id, self.rules)
         await interaction.response.edit_message(
             content="🛡️ **AutoMod Control Panel**\nSelect an option to configure:",
