@@ -3,7 +3,7 @@ import sys
 import asyncio
 import discord
 from discord.ext import commands
-from discord.ui import Button, View, button
+from discord.ui import View, button
 
 admins = [445899149997768735] # List of developer IDs
 
@@ -35,23 +35,23 @@ class DeveloperDashboardView(View):
         self.bot = bot
 
     @discord.ui.button(label="Help", style=discord.ButtonStyle.blurple)
-    async def helpdev_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def helpdev_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         await self.help(interaction)
 
     @discord.ui.button(label="Server List", style=discord.ButtonStyle.green)
-    async def servers_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def servers_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         await self.servers(interaction)
 
     @discord.ui.button(label="Leave Server", style=discord.ButtonStyle.green)
-    async def leave_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def leave_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         await self.leave(interaction)
 
     @discord.ui.button(label="Server Info", style=discord.ButtonStyle.green)
-    async def serverinfo_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def serverinfo_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         await self.serverinfo(interaction)
 
     @discord.ui.button(label="Restart Bot", style=discord.ButtonStyle.red)
-    async def restart_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def restart_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         await self.restart(interaction)
 
     async def servers(self, interaction: discord.Interaction):
@@ -62,14 +62,14 @@ class DeveloperDashboardView(View):
             file = discord.File("servers.txt")
             await interaction.response.send_message(f"I am in `{len(self.bot.guilds)}` different servers.", file=file,
                                                     ephemeral=True)
-        except Exception as e:
+        except (OSError, discord.DiscordException) as e:
             print(f"Error creating server list: {e}")
             await interaction.response.send_message(f"Error creating server list: {str(e)}", ephemeral=True)
         finally:
             if os.path.exists("servers.txt"):
                 try:
                     os.remove("servers.txt")
-                except Exception as e:
+                except (OSError, PermissionError) as e:
                     print(f"Error removing servers.txt: {e}")
 
     async def leave(self, interaction: discord.Interaction):
@@ -119,7 +119,7 @@ class DeveloperDashboardView(View):
         except asyncio.TimeoutError:
             await interaction.channel.send("Operation timed out. Please try again.")
             return
-        except Exception as e:
+        except (discord.DiscordException, ValueError) as e:
             await interaction.channel.send(f"An error occurred: {str(e)}")
             return
 
@@ -152,7 +152,7 @@ class DeveloperDashboardView(View):
 
             confirm_view = ConfirmLeaveView()
             guild_name = guild.name
-            confirm_msg = await interaction.channel.send(
+            await interaction.followup.send(
                 f"Are you sure you want to leave **{guild_name}** (`{guild_id}`)? This action cannot be undone.",
                 view=confirm_view
             )
@@ -160,7 +160,7 @@ class DeveloperDashboardView(View):
             await confirm_view.wait()
 
             if confirm_view.confirmed:
-                leaving_msg = await interaction.channel.send(f"Leaving server **{guild_name}** (`{guild_id}`)...")
+                await interaction.channel.send(f"Leaving server **{guild_name}** (`{guild_id}`)...")
                 await guild.leave()
                 await interaction.channel.send(f"Successfully left **{guild_name}**.")
 
@@ -201,7 +201,7 @@ class DeveloperDashboardView(View):
             await interaction.channel.send("Invalid server ID. Please provide a valid numeric ID.")
         except asyncio.TimeoutError:
             await interaction.channel.send("Operation timed out. Please try again.")
-        except Exception as e:
+        except (discord.DiscordException) as e:
             await interaction.channel.send(f"An error occurred: {str(e)}")
 
     async def restart(self, interaction: discord.Interaction):

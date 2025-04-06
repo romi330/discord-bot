@@ -76,11 +76,11 @@ async def on_ready():
     print("\nBot is ready and operational!")
     client.loop.create_task(update_spotify_activity(sp))
     
-async def update_spotify_activity(sp):
+async def update_spotify_activity(spotify_client):
     while True:
         try:
-            sp = spotipy.Spotify(auth_manager=sp_oauth)
-            current_playback = sp.current_playback()
+            spotify_client = spotipy.Spotify(auth_manager=sp_oauth)
+            current_playback = spotify_client.current_playback()
 
             if current_playback and current_playback.get('is_playing') and current_playback.get('item'):
                 track_name = current_playback['item']['name']
@@ -103,7 +103,7 @@ async def update_spotify_activity(sp):
             print(f"Error updating Spotify activity: {e}")
             traceback.print_exc()
             await asyncio.sleep(30)
-        except Exception as e:
+        except (KeyError, ValueError, TypeError) as e:
             print(f"Unexpected error: {e}")
             traceback.print_exc()
             await asyncio.sleep(30)

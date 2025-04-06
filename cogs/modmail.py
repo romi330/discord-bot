@@ -12,16 +12,16 @@ if not os.path.exists(CONFIG_FILE):
         json.dump({}, file, indent=4)
 
 def load_config():
-    with open(CONFIG_FILE, "r", encoding="utf-8") as file:
+    with open(CONFIG_FILE, "r", encoding="utf-8") as load_config_file:
         try:
-            return json.load(file)
+            return json.load(load_config_file)
         except json.JSONDecodeError:
             return {}
 
 def save_config(config):
     try:
-        with open(CONFIG_FILE, "w", encoding="utf-8") as file:
-            json.dump(config, file, indent=4)
+        with open(CONFIG_FILE, "w", encoding="utf-8") as save_config_file:
+            json.dump(config, save_config_file, indent=4)
     except (IOError, json.JSONDecodeError) as e:
         print(f"Failed to save configuration: {e}")
 
