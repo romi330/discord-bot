@@ -31,7 +31,7 @@ class AutoMod(commands.Cog):
         else:
             self.rules = {}
 
-        for guild_rules in self.rules.items():
+        for guild_id, guild_rules in self.rules.items():
             guild_rules.setdefault("thresholds", {
                 "spam_messages": 5,
                 "spam_seconds": 10,

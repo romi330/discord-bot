@@ -30,3 +30,4 @@ Thumbs.db
 .venv/
 __pycache__/
 .cache/
+.cache
