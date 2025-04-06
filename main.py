@@ -9,7 +9,7 @@ from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-VERSION = "v5.3"  # Update this version number for each release
+VERSION = "v5.4"  # Update this version number for each release
 intents = discord.Intents.default()
 intents.message_content = True  # Required for on_message, feedback, and modmail (privileged)
 client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)
@@ -23,7 +23,8 @@ sp_oauth = SpotifyOAuth(
     redirect_uri="http://localhost:8888/callback",
     scope="user-library-read user-read-playback-state user-read-currently-playing",
     cache_path=".cache",
-    show_dialog=True
+    show_dialog=True,
+    requests_timeout=10  # Increase the timeout to 10 seconds
 )
 
 sp = spotipy.Spotify(auth_manager=sp_oauth)
@@ -75,7 +76,7 @@ async def on_ready():
 
     print("\nBot is ready and operational!")
     client.loop.create_task(update_spotify_activity(sp))
-    
+
 async def update_spotify_activity(spotify_client):
     while True:
         try:
@@ -99,10 +100,15 @@ async def update_spotify_activity(spotify_client):
             await client.change_presence(activity=activity)
             await asyncio.sleep(10)
 
+        except requests.exceptions.ReadTimeout:
+            print("Spotify API timed out. Retrying in 30 seconds...")
+            await asyncio.sleep(30)
+
         except (spotipy.SpotifyException, discord.HTTPException, asyncio.TimeoutError) as e:
             print(f"Error updating Spotify activity: {e}")
             traceback.print_exc()
             await asyncio.sleep(30)
+
         except (KeyError, ValueError, TypeError) as e:
             print(f"Unexpected error: {e}")
             traceback.print_exc()
@@ -127,7 +133,7 @@ async def on_app_command_error(interaction: discord.Interaction, exception: app_
             cooldown_time = round(exception.retry_after, 2)
             error_message = f":hourglass: This command is on cooldown. Try again in `{cooldown_time}` seconds."
         elif isinstance(exception, (app_commands.CommandInvokeError, commands.CommandInvokeError)):
-            error_message = f"<:what_in_the_hell:1353784539264192583> {str(exception).split(':')[-1]}" if ":" in str(exception) else "<:what_in_the_hell:1353784539264192583> An error occurred."
+            error_message = f"<:what_in_the_hell:1353784539264192583> {str(exception).rsplit(':', maxsplit=1)[-1]}" if ":" in str(exception) else "<:what_in_the_hell:1353784539264192583> An error occurred."
         elif isinstance(exception, (commands.BadArgument, commands.MissingRequiredArgument)):
             error_message = f"<:what_in_the_hell:1353784539264192583> {str(exception)}"
         elif isinstance(exception, app_commands.MissingPermissions):

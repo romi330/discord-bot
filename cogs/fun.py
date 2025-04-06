@@ -1,8 +1,8 @@
+import os
 import json
 import re
 import discord
 import requests
-import os
 from bs4 import BeautifulSoup as bs
 from discord import app_commands
 from discord.ext import commands

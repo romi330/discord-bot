@@ -1,3 +1,4 @@
+# pylint: disable=unused-argument
 import json
 import datetime
 import time
@@ -39,7 +40,7 @@ class AutoMod(commands.Cog):
             "emoji_limit": 5
         }
 
-        for guild_id, guild_rules in self.rules.items():
+        for _, guild_rules in self.rules.items():
             guild_rules.setdefault("thresholds", {})
             for key, value in default_thresholds.items():
                 guild_rules["thresholds"].setdefault(key, value)
