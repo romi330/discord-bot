@@ -31,14 +31,18 @@ class AutoMod(commands.Cog):
         else:
             self.rules = {}
 
+        default_thresholds = {
+            "spam_messages": 5,
+            "spam_seconds": 10,
+            "flood_messages": 5,
+            "flood_seconds": 5,
+            "emoji_limit": 5
+        }
+
         for guild_id, guild_rules in self.rules.items():
-            guild_rules.setdefault("thresholds", {
-                "spam_messages": 5,
-                "spam_seconds": 10,
-                "flood_messages": 5,
-                "flood_seconds": 5,
-                "emoji_limit": 5
-            })
+            guild_rules.setdefault("thresholds", {})
+            for key, value in default_thresholds.items():
+                guild_rules["thresholds"].setdefault(key, value)
 
     def save_rules(self):
         with open(self.json_file, "w", encoding="utf-8") as file:
@@ -95,10 +99,7 @@ class AutoMod(commands.Cog):
 
     @commands.Cog.listener()
     async def on_message(self, message: discord.Message):
-        if message.author.bot:
-            return
-
-        if message.guild is None:
+        if message.author.bot or message.guild is None:
             return
 
         if not message.guild.me.guild_permissions.manage_messages:
@@ -246,7 +247,6 @@ class AutoMod(commands.Cog):
 
         return len(user_channel_messages) > message_limit
 
-
 class AutoModMainMenu(ui.View):
     def __init__(self, cog, guild_id, rules):
         super().__init__(timeout=300)
@@ -328,8 +328,6 @@ class AutoModMainMenu(ui.View):
     @ui.button(label="Close", style=discord.ButtonStyle.danger, emoji="✖️")
     async def close_menu(self, interaction: discord.Interaction, button: ui.Button):
         await interaction.response.edit_message(content="AutoMod settings closed.", view=None)
-
-
 class FeatureSettingsView(ui.View):
     def __init__(self, cog, guild_id, rules):
         super().__init__(timeout=300)
@@ -390,13 +388,12 @@ class FeatureSettingsView(ui.View):
         await self.toggle_rule(interaction, "blocked_words", "Word Filter", button)
 
     @ui.button(label="Back", style=discord.ButtonStyle.secondary)
-    async def back_button(self, interaction: discord.Interaction, button: ui.Button):
+    async def back_button(self, interaction: discord.Interaction):
         view = AutoModMainMenu(self.cog, self.guild_id, self.rules)
         await interaction.response.edit_message(
             content="🛡️ **AutoMod Control Panel**\nSelect an option to configure:",
             view=view
         )
-
 
 class WordFiltersView(ui.View):
     def __init__(self, cog, guild_id, rules):
@@ -455,7 +452,6 @@ class WordFiltersView(ui.View):
             view=view
         )
 
-
 class BlockedWordModal(ui.Modal):
     word_input = ui.TextInput(label="Enter word", placeholder="Enter a word to block or remove")
 
@@ -501,6 +497,7 @@ class ThresholdSettingsView(ui.View):
         self.guild_id = guild_id
         self.rules = rules
 
+        # Ensure thresholds exist in the rules
         if "thresholds" not in self.rules:
             self.rules["thresholds"] = {
                 "spam_messages": 5,
@@ -550,8 +547,6 @@ class ThresholdSettingsView(ui.View):
             content="🛡️ **AutoMod Control Panel**\nSelect an option to configure:",
             view=view
         )
-
-
 class ThresholdModal(ui.Modal):
     def __init__(self, title, cog, guild_id, rules, threshold_type):
         super().__init__(title=title)

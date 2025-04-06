@@ -18,19 +18,20 @@ class Misc(commands.Cog):
     @app_commands.checks.cooldown(1, 2)
     async def paul(self, interaction: discord.Interaction):
         msg = discord.Embed(title="Paul Changelog and Info.", color=discord.Colour.blurple())
-        msg.add_field(name=f"Version {VERSION} | Fourth Release",
-                      value="",
-                      inline=False)
+        msg.add_field(name=f"Version {VERSION} | Sixth Release",
+                  value="",
+                  inline=False)
         msg.add_field(name="What's changed?",
-                      value="**-** New Help Command!\n"
-                            "**-** You can use it to give you more information about all the commands that we offer.\n")
+                  value="**-** Updated the automod system for better moderation capabilities.\n"
+                    "**-** Debugged and fixed several issues across the bot.\n",
+                  inline=False)
         msg.add_field(name="What's fixed?",
-                      value="**-** Bug Squashing. :bug:\n"
-                            "**-** Finally out of beta! <a:lil_swag:1353785503539007640>\n", inline=True)
+                  value="**-** Resolved critical bugs affecting bot stability.\n"
+                    "**-** Improved overall performance and reliability.\n", inline=True)
         msg.add_field(name="Thank you for using Paul!",
-                      value="**-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-**\n"
-                      "Credits: `wk_killer`.\n",
-                      inline=False)
+                  value="**-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-**\n"
+                  "Credits: `wk_killer`.\n",
+                  inline=False)
 
         await interaction.response.send_message(embed=msg, ephemeral=True)
 
