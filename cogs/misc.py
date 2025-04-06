@@ -18,7 +18,7 @@ class Misc(commands.Cog):
     @app_commands.checks.cooldown(1, 2)
     async def paul(self, interaction: discord.Interaction):
         msg = discord.Embed(title="Paul Changelog and Info.", color=discord.Colour.blurple())
-        msg.add_field(name=f"Version {VERSION} | Sixth Release",
+        msg.add_field(name=f"Version {VERSION} | Fifth Release",
                   value="",
                   inline=False)
         msg.add_field(name="What's changed?",

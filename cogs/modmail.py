@@ -1,7 +1,7 @@
 import json
 import os
 import discord
-from discord import ui, Embed, Colour, Interaction, TextStyle
+from discord import ui, Embed, Colour, TextStyle, Interaction
 from discord.ext import commands
 from discord import app_commands
 
@@ -31,8 +31,8 @@ class ModmailModal(ui.Modal):
         self.bot = bot
 
         self.message = ui.TextInput(
-            label='Your message:',
-            placeholder='Describe your issue or concern...',
+            label="Your message:",
+            placeholder="Describe your issue or concern...",
             style=TextStyle.paragraph,
             max_length=500
         )
@@ -52,17 +52,32 @@ class ModmailModal(ui.Modal):
                     color=Colour.blurple()
                 ).set_author(
                     name=interaction.user.name,
-                    icon_url=interaction.user.avatar.url if interaction.user.avatar else None
+                    icon_url=(
+                        interaction.user.avatar.url
+                        if interaction.user.avatar
+                        else None
+                    )
                 )
+
                 await log_channel.send(embed=embed)
-                await interaction.response.send_message("Your message has been sent to the moderators.", ephemeral=True)
+
+                await interaction.response.send_message(
+                    "Your message will be sent to the moderators. Thank you for reaching out!",
+                    ephemeral=True
+                )
             else:
-                await interaction.response.send_message("Modmail system is not properly configured.", ephemeral=True)
+                await interaction.response.send_message(
+                    "Modmail system is not properly configured. Please contact an administrator.",
+                    ephemeral=True
+                )
         else:
-            await interaction.response.send_message("Modmail system has not been set up for this server.", ephemeral=True)
+            await interaction.response.send_message(
+                "Modmail system has not been set up for this server. Please contact an administrator.",
+                ephemeral=True
+            )
 
 class Modmail(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @app_commands.command(name="setmodmail", description="Set the modmail log channel (manage_channels)")
@@ -71,7 +86,10 @@ class Modmail(commands.Cog):
         config = load_config()
         config[str(interaction.guild.id)] = channel.id
         save_config(config)
-        await interaction.response.send_message(f"Modmail log channel set to {channel.mention}", ephemeral=True)
+        await interaction.response.send_message(
+            f"Modmail log channel set to {channel.mention}",
+            ephemeral=True
+        )
 
     @app_commands.command(name="modmail", description="Send a modmail message")
     @app_commands.checks.cooldown(2, 240)
