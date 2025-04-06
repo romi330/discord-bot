@@ -1,8 +1,8 @@
-from discord import ui, Embed, Colour, Interaction, TextStyle
+import discord
+from discord import ui, Embed, Colour, TextStyle
 from discord import app_commands
 from discord.ui import TextInput
 from discord.ext import commands
-import discord
 from main import LOG_CHANNEL
 
 class FeedbackModal(ui.Modal):

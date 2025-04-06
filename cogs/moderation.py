@@ -80,7 +80,7 @@ class Moderation(commands.Cog):
     @bot_has_permissions(manage_messages=True)
     @guild_only()
     async def purge(self, interaction: discord.Interaction, amount: int):
-        if not (1 <= amount <= 500):
+        if not 1 <= amount <= 500:
             embed = discord.Embed(
                 description="<:what_in_the_hell:1353784539264192583> You must purge between 1 and 500 messages.",
                 color=discord.Color.red()

@@ -1,8 +1,8 @@
 import asyncio
 import os
 import traceback
-import requests
 import platform
+import requests
 from dotenv import load_dotenv
 import discord
 from discord import app_commands
@@ -10,7 +10,7 @@ from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-VERSION = "v5.4"  # Update this version number for each release
+VERSION = "v5.5"  # Update this version number for each release
 intents = discord.Intents.default()
 intents.message_content = True  # Required for on_message, feedback, and modmail (privileged)
 client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)
