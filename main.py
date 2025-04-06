@@ -1,6 +1,7 @@
 import asyncio
 import os
 import traceback
+import requests
 import platform
 from dotenv import load_dotenv
 import discord
