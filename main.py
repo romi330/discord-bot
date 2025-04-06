@@ -167,19 +167,19 @@ async def on_command_error(ctx: commands.Context, exception: commands.CommandErr
         cooldown_time = round(exception.retry_after, 2)
         error_message = f":hourglass: This command is on cooldown. Try again in `{cooldown_time}` seconds."
     elif isinstance(exception, commands.CheckFailure):
-        error_message = ":x: You do not have permission to use this command."
+        error_message = "<a:peepoclown:1353784183092416686> You do not have permission to use this command."
     elif isinstance(exception, (commands.BadArgument, commands.MissingRequiredArgument)):
-        error_message = f":x: {str(exception)}"
+        error_message = f"<:what_in_the_hell:1353784539264192583> {str(exception)}"
     elif isinstance(exception, commands.CommandNotFound):
-        error_message = ":x: Command not found. Please try again later."
+        error_message = "<:what_in_the_hell:1353784539264192583> Command not found. Please try again later."
     elif isinstance(exception, commands.MissingPermissions):
         missing_perms = ", ".join(exception.missing_permissions)
-        error_message = f":x: You are missing the following permission(s): `{missing_perms}`."
+        error_message = f"<a:peepoclown:1353784183092416686> You are missing the following permission(s): `{missing_perms}`."
     elif isinstance(exception, commands.BotMissingPermissions):
         missing_perms = ", ".join(exception.missing_permissions)
-        error_message = f":x: I am missing the following permission(s): `{missing_perms}`."
+        error_message = f"<:what_in_the_hell:1353784539264192583> I am missing the following permission(s): `{missing_perms}`."
     else:
-        error_message = ":x: Oops, something went wrong. Please try again later."
+        error_message = "<:what_in_the_hell:1353784539264192583> Oops, something went wrong. Please try again later."
 
     try:
         await ctx.send(embed=discord.Embed(description=error_message, color=red), ephemeral=True)

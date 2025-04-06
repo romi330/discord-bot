@@ -5,7 +5,7 @@ import discord
 from discord.ext import commands
 from discord.ui import Button, View, button
 
-admins = [] # List of developer IDs
+admins = [445899149997768735] # List of developer IDs
 
 
 def developer_only():
