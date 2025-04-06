@@ -2,10 +2,10 @@ import json
 import re
 import discord
 import requests
+import os
 from bs4 import BeautifulSoup as bs
 from discord import app_commands
 from discord.ext import commands
-import os
 from dotenv import load_dotenv
 load_dotenv()
 
@@ -19,15 +19,17 @@ HEADERS = {
 BASE_URL = "https://api.clashofclans.com/v1"
 
 def get_player_info(player_tag):
+    if not player_tag or not isinstance(player_tag, str):
+        raise ValueError("Invalid player tag provided.")
     url = f"{BASE_URL}/players/%23{player_tag.strip('#')}"
-    response = requests.get(url, headers=HEADERS)
+    response = requests.get(url, headers=HEADERS, timeout=10)
     if response.status_code == 200:
         return response.json()
     return None
 
 def get_clan_info(clan_tag):
     url = f"{BASE_URL}/clans/%23{clan_tag.strip('#')}"
-    response = requests.get(url, headers=HEADERS)
+    response = requests.get(url, headers=HEADERS, timeout=10)
     if response.status_code == 200:
         return response.json()
     return None
@@ -42,7 +44,7 @@ class Fun(commands.Cog):
     @app_commands.checks.cooldown(1, 2)
     async def dadjoke(self, interaction: discord.Interaction):
         # Tells a dad joke.
-        data = bs(requests.get("https://icanhazdadjoke.com/").text, "html.parser")
+        data = bs(requests.get("https://icanhazdadjoke.com/", timeout=10).text, "html.parser")
         data = str(data.select("p")[0])
         joke = re.findall('class="subtitle">.*</p>$', data)[0].replace('class="subtitle">', '').replace('</p>', '')
 
@@ -65,7 +67,7 @@ class Fun(commands.Cog):
     @app_commands.command(description="Get positive affirmations to help you get through your day")
     @app_commands.checks.cooldown(1, 5)
     async def affirmation(self, interaction: discord.Interaction):
-        affirmation = json.loads(requests.get("https://www.affirmations.dev/").text)["affirmation"]
+        affirmation = json.loads(requests.get("https://www.affirmations.dev/", timeout=10).text)["affirmation"]
         await interaction.response.send_message(
             embed=discord.Embed(description=affirmation, color=discord.Colour.blurple()))
 

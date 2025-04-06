@@ -9,11 +9,11 @@ from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-version = "v4.16"  # Update this version number for each release
+VERSION = "v4.18"  # Update this version number for each release
 intents = discord.Intents.default()
 intents.message_content = True  # Required for on_message, feedback, and modmail (privileged)
 client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)
-log_channel = 1353416165350834278
+LOG_CHANNEL = 1353416165350834278
 load_dotenv()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
@@ -46,20 +46,20 @@ async def on_ready():
         print(f"  Name: {client.user.name}")
         print(f"  ID: {client.user.id}")
         print(f"  Discriminator: {client.user.discriminator}")
-        print(f"  Bot Version: {version}")
+        print(f"  Bot Version: {VERSION}")
 
         print("\nServer Statistics:")
         total_servers = len(client.guilds)
         total_users = sum(guild.member_count for guild in client.guilds)
         print(f"  Total Servers: {total_servers}")
         print(f"  Total Users: {total_users}")
-        log_channel_obj = client.get_channel(log_channel)
+        log_channel_obj = client.get_channel(LOG_CHANNEL)
         if log_channel_obj:
             startup_embed = discord.Embed(
                 title="🤖 Bot Startup Notification",
                 color=discord.Color.green()
             )
-            startup_embed.add_field(name="Bot Version", value=version, inline=False)
+            startup_embed.add_field(name="Bot Version", value=VERSION, inline=False)
             startup_embed.add_field(name="Total Servers", value=total_servers, inline=True)
             startup_embed.add_field(name="Total Users", value=total_users, inline=True)
             startup_embed.add_field(name="Synced Commands", value=len(synced), inline=True)
@@ -69,16 +69,14 @@ async def on_ready():
 
             await log_channel_obj.send(embed=startup_embed)
 
-    except Exception as e:
+    except (discord.HTTPException, discord.ClientException, OSError) as e:
         print(f"Error in on_ready: {e}")
         traceback.print_exc()
 
     print("\nBot is ready and operational!")
+    client.loop.create_task(update_spotify_activity(sp))
     
-    client.loop.create_task(update_spotify_activity())
-
-async def update_spotify_activity():
-    global sp
+async def update_spotify_activity(sp):
     while True:
         try:
             sp = spotipy.Spotify(auth_manager=sp_oauth)
@@ -96,13 +94,17 @@ async def update_spotify_activity():
                     url="https://twitch.tv/romi330"
                 )
             else:
-                activity = discord.Streaming(name=f"{version} | /help", url="https://twitch.tv/romi330")
+                activity = discord.Streaming(name=f"{VERSION} | /help", url="https://twitch.tv/romi330")
 
             await client.change_presence(activity=activity)
             await asyncio.sleep(10)
 
-        except Exception as e:
+        except (spotipy.SpotifyException, discord.HTTPException, asyncio.TimeoutError) as e:
             print(f"Error updating Spotify activity: {e}")
+            traceback.print_exc()
+            await asyncio.sleep(30)
+        except Exception as e:
+            print(f"Unexpected error: {e}")
             traceback.print_exc()
             await asyncio.sleep(30)
 
@@ -150,7 +152,7 @@ async def on_app_command_error(interaction: discord.Interaction, exception: app_
 
     if not isinstance(exception, (commands.BadArgument, commands.MissingRequiredArgument, app_commands.BotMissingPermissions, app_commands.MissingPermissions, CommandOnCooldown)):
         if isinstance(exception, (app_commands.CommandInvokeError, app_commands.AppCommandError)):
-            log_channel_obj = client.get_channel(log_channel)
+            log_channel_obj = client.get_channel(LOG_CHANNEL)
             if log_channel_obj:
                 error_trace = "".join(traceback.format_exception(type(exception), exception, exception.__traceback__))
                 if len(error_trace) > 2000:
@@ -183,9 +185,9 @@ async def on_command_error(ctx: commands.Context, exception: commands.CommandErr
         await ctx.send(embed=discord.Embed(description=error_message, color=red), ephemeral=True)
     except discord.HTTPException:
         pass
-    if not isinstance(exception, (commands.BadArgument, commands.MissingRequiredArugment, commands.BotMissingPermissions, commands.MissingPermissions, commands.CommandOnCooldown, commands.CheckFailure, commands.CommandNotFound)):
+    if not isinstance(exception, (commands.BadArgument, commands.MissingRequiredArgument, commands.BotMissingPermissions, commands.MissingPermissions, commands.CommandOnCooldown, commands.CheckFailure, commands.CommandNotFound)):
         if isinstance(exception, (commands.CommandInvokeError, commands.CommandError)):
-            log_channel_obj = client.get_channel(log_channel)
+            log_channel_obj = client.get_channel(LOG_CHANNEL)
             if log_channel_obj:
                 error_trace = "".join(traceback.format_exception(type(exception), exception, exception.__traceback__))
                 if len(error_trace) > 2000:

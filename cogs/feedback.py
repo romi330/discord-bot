@@ -3,8 +3,7 @@ from discord import app_commands
 from discord.ui import TextInput
 from discord.ext import commands
 import discord
-from main import log_channel
-
+from main import LOG_CHANNEL
 
 class FeedbackModal(ui.Modal):
     def __init__(self):
@@ -36,13 +35,13 @@ class FeedbackModal(ui.Modal):
         self.add_item(self.category_field)
         self.add_item(self.details_field)
 
-    async def on_submit(self, interaction: Interaction):
+    async def on_submit(self, interaction: discord.Interaction):
         await interaction.response.send_message(
             f'Thanks for your feedback, {interaction.user.name}!', ephemeral=True
         )
 
-        channel = log_channel if isinstance(log_channel, discord.TextChannel) else interaction.client.get_channel(
-            log_channel)
+        channel = LOG_CHANNEL if isinstance(LOG_CHANNEL, discord.TextChannel) else interaction.client.get_channel(
+            LOG_CHANNEL)
         if channel:
             embed = Embed(title="New Feedback Received", color=Colour.dark_blue())
             embed.add_field(name="Title", value=self.title_field.value, inline=False)

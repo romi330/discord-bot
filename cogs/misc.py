@@ -1,7 +1,7 @@
 import discord
 from discord import app_commands
 from discord.ext import commands
-from main import version
+from main import VERSION
 
 
 class Misc(commands.Cog):
@@ -17,8 +17,8 @@ class Misc(commands.Cog):
     @app_commands.command(description="Paul changelog and information.")
     @app_commands.checks.cooldown(1, 2)
     async def paul(self, interaction: discord.Interaction):
-        msg = discord.Embed(title=f"Paul Changelog and Info.", color=discord.Colour.blurple())
-        msg.add_field(name=f"Version {version} | Fourth Release",
+        msg = discord.Embed(title="Paul Changelog and Info.", color=discord.Colour.blurple())
+        msg.add_field(name=f"Version {VERSION} | Fourth Release",
                       value="",
                       inline=False)
         msg.add_field(name="What's changed?",

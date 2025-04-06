@@ -1,14 +1,13 @@
-import discord
-from discord import app_commands, ui, Embed
-from discord.ext import commands
 import json
 import os
 import re
 from collections import defaultdict
-import asyncio
 from better_profanity import profanity
 import datetime
 import time
+import discord
+from discord import app_commands, ui, Embed
+from discord.ext import commands
 
 
 class AutoMod(commands.Cog):
@@ -27,12 +26,12 @@ class AutoMod(commands.Cog):
 
     def load_rules(self):
         if os.path.exists(self.json_file):
-            with open(self.json_file, "r") as file:
+            with open(self.json_file, "r", encoding="utf-8") as file:
                 self.rules = json.load(file)
         else:
             self.rules = {}
 
-        for guild_id, guild_rules in self.rules.items():
+        for guild_rules in self.rules.items():
             guild_rules.setdefault("thresholds", {
                 "spam_messages": 5,
                 "spam_seconds": 10,
@@ -42,7 +41,7 @@ class AutoMod(commands.Cog):
             })
 
     def save_rules(self):
-        with open(self.json_file, "w") as file:
+        with open(self.json_file, "w", encoding="utf-8") as file:
             json.dump(self.rules, file, indent=4)
 
     def cleanup_message_cache(self):

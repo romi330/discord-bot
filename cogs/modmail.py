@@ -1,23 +1,29 @@
+import json
+import os
 import discord
 from discord import ui, Embed, Colour, Interaction, TextStyle
 from discord.ext import commands
 from discord import app_commands
-import json
-import os
 
 CONFIG_FILE = "modmail.json"
 
 if not os.path.exists(CONFIG_FILE):
-    with open(CONFIG_FILE, "w") as f:
-        json.dump({}, f)
+    with open(CONFIG_FILE, "w", encoding="utf-8") as file:
+        json.dump({}, file, indent=4)
 
 def load_config():
-    with open(CONFIG_FILE, "r") as f:
-        return json.load(f)
+    with open(CONFIG_FILE, "r", encoding="utf-8") as file:
+        try:
+            return json.load(file)
+        except json.JSONDecodeError:
+            return {}
 
 def save_config(config):
-    with open(CONFIG_FILE, "w") as f:
-        json.dump(config, f, indent=4)
+    try:
+        with open(CONFIG_FILE, "w", encoding="utf-8") as file:
+            json.dump(config, file, indent=4)
+    except (IOError, json.JSONDecodeError) as e:
+        print(f"Failed to save configuration: {e}")
 
 class ModmailModal(ui.Modal):
     def __init__(self, bot: commands.Bot):
