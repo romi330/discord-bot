@@ -26,8 +26,12 @@ Thumbs.db
 # Ignore JSON files
 *.json
 
-# Ignore Python virtual environment and cache
+# Ignore Python virtual environment
 .venv/
 __pycache__/
-.cache/
+
+# Ignore cache
 .cache
+
+# Ignore shell script files
+*.sh
