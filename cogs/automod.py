@@ -1,3 +1,4 @@
+# pylint: disable=unused-argument
 import json
 import datetime
 import time
