@@ -53,10 +53,15 @@ class Misc(commands.Cog):
     async def invite(self, interaction: discord.Interaction):
         await interaction.response.send_message("https://discord.com/oauth2/authorize?client_id=1249144690461118627",
                                                 ephemeral=True)
+    
+    @app_commands.command(description="Join the support server.")
+    @app_commands.checks.cooldown(1, 2)
+    async def support(self, interaction: discord.Interaction):
+        await interaction.response.send_message("https://discord.gg/8hYZUtUxme", ephemeral=True)
 
     @app_commands.command(description="View the bot's source code.")
     @app_commands.checks.cooldown(1, 2)
-    async def sourcecode(self, interaction: discord.Interaction):
+    async def source(self, interaction: discord.Interaction):
         embed = discord.Embed(
         title="Paul - Discord Bot",
         description="Paul is an open-source, multipurpose Discord bot built for performance, automation, and community interaction.\n\n"

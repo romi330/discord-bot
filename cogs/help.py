@@ -41,6 +41,11 @@ class HelpView(discord.ui.View):
         embed.add_field(name="`/test`", value="Check if the bot is working", inline=False)
         embed.add_field(name="`/invite`", value="Get the bot's invite link", inline=False)
         embed.add_field(name="`/paul`", value="View changelog and bot information", inline=False)
+        embed.add_field(name="`/source`", value="View the bot's source code", inline=False)
+        embed.add_field(name="`/vote`", value="Vote for the bot on top.gg", inline=False)
+        embed.add_field(name="`/checkvote`", value="Check if you have voted for the bot", inline=False)
+        embed.add_field(name="`/support`", value="Join the support server", inline=False)
+        embed.add_field(name="`/feedback`", value="Send feedback to the developer", inline=False)
         embed.set_footer(text="Use / before each command • Page 1/5")
         embed.set_thumbnail(url="https://cdn.discordapp.com/avatars/1249144690461118627/9a3afbbef2a17cd9b637e951a5277393.png")  # Replace with your bot's avatar URL
         await interaction.response.edit_message(embed=embed, view=self)
