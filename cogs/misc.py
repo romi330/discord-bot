@@ -30,7 +30,7 @@ class Misc(commands.Cog):
                     "**-** Improved overall performance and reliability.\n", inline=True)
         msg.add_field(name="Thank you for using Paul!",
                   value="**-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-**\n"
-                  "Credits: `wk_killer`.\n",
+                  "Credits: `ronenlazowski`.\n",
                   inline=False)
 
         await interaction.response.send_message(embed=msg, ephemeral=True)
