@@ -54,7 +54,7 @@ class Misc(commands.Cog):
         await interaction.response.send_message("https://discord.com/oauth2/authorize?client_id=1249144690461118627",
                                                 ephemeral=True)
 
-    @app_commands.command(description="Source code.")
+    @app_commands.command(description="View the bot's source code.")
     @app_commands.checks.cooldown(1, 2)
     async def sourcecode(self, interaction: discord.Interaction):
         embed = discord.Embed(
@@ -62,44 +62,36 @@ class Misc(commands.Cog):
         description="Paul is an open-source, multipurpose Discord bot built for performance, automation, and community interaction.\n\n"
                     "Explore the source code, contribute, or fork your own version!",
         url="https://github.com/ronenlazowski/paul",
-        color=discord.Color.from_rgb(36, 41, 46)
-    )
-
-        embed.set_thumbnail(url="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png")
-
+        color=discord.Color.from_rgb(36, 41, 46))
+        embed.set_thumbnail(url="https://www.ronenlaz.com/images/github-mark-white.png")
         embed.add_field(
             name="📂 Repository",
             value="[ronenlazowski/paul](https://github.com/ronenlazowski/paul)",
             inline=False
         )
-
         embed.add_field(
             name="🛠️ Language",
             value="Python 🐍",
             inline=True
         )
-
         embed.add_field(
             name="📜 License",
-            value="[GPL-3.0](https://github.com/ronenlazowski/paul/blob/main/LICENSE) License 🧾",
+            value="[GPL-3.0 License](https://github.com/ronenlazowski/paul/blob/main/LICENSE) 🧾",
             inline=True
         )
-
         embed.add_field(
             name="🚀 Features",
             value="• AutoMod with Discord API\n"
                 "• Customizable server settings\n"
                 "• Modmail support\n"
                 "• JSON-based configuration system\n"
-                "• Built to scale",
+                "• Built to scale with large systems",
             inline=False
         )
-
         embed.set_footer(
             text="Made with ❤️ by Ronen Lazowski • Open-source forever"
         )
-
-        await interaction.resposne.send_message(embed=embed)
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 async def setup(bot: commands.Bot):
