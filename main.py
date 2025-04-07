@@ -96,7 +96,7 @@ async def update_spotify_activity(spotify_client):
             else:
                 print("Failed to connect to Spotify API after retries.")
                 return
-            
+
             if current_playback and current_playback.get('is_playing') and current_playback.get('item'):
                 track_name = current_playback['item']['name']
                 artist_name = current_playback['item']['artists'][0]['name']
