@@ -2,14 +2,12 @@ import asyncio
 import os
 import traceback
 import platform
-import requests
 from dotenv import load_dotenv
 import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
+
 VERSION = "v5.5"  # Update this version number for each release
 intents = discord.Intents.default()
 intents.message_content = True  # Required for on_message, feedback, and modmail (privileged)
@@ -18,24 +16,6 @@ LOG_CHANNEL = 1353416165350834278
 load_dotenv()
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
-sp_oauth = SpotifyOAuth(
-    client_id=os.getenv("SPOTIPY_CLIENT_ID"),
-    client_secret=os.getenv("SPOTIPY_CLIENT_SECRET"),
-    redirect_uri="http://localhost:8888/callback",
-    scope="user-library-read user-read-playback-state user-read-currently-playing",
-    cache_path=".cache",
-    show_dialog=True,
-    requests_timeout=20
-)
-
-sp = spotipy.Spotify(auth_manager=sp_oauth)
-
-def refresh_token():
-    token_info = sp_oauth.get_cached_token()
-    if token_info and sp_oauth.is_token_expired(token_info):
-        new_token = sp_oauth.refresh_access_token(token_info["refresh_token"])
-        return new_token["access_token"]
-    return token_info["access_token"]
 
 @client.event
 async def on_ready():
@@ -71,72 +51,13 @@ async def on_ready():
 
             await log_channel_obj.send(embed=startup_embed)
 
+
     except (discord.HTTPException, discord.ClientException, OSError) as e:
         print(f"Error in on_ready: {e}")
         traceback.print_exc()
 
     print("\nBot is ready and operational!")
-    client.loop.create_task(update_spotify_activity(sp, sp_oauth, client, VERSION, "https://twitch.tv/romi330"))
-
-async def update_spotify_activity(spotify_client, spotify_oauth, bot_client, version, twitch_url):
-    async def retry_async(func, retries=3, delay=5, backoff=2):
-        for _ in range(retries):
-            try:
-                if asyncio.iscoroutinefunction(func):
-                    return await func()
-                else:
-                    return func()
-            except requests.exceptions.ConnectionError as e:
-                print(f"Error: {e}. Retrying in {delay} seconds...")
-                await asyncio.sleep(delay)
-                delay *= backoff
-        print(f"Failed after {retries} retries.")
-        return None
-
-    while True:
-        try:
-            token_info = spotify_oauth.get_cached_token()
-            if spotify_oauth.is_token_expired(token_info):
-                refreshed = await retry_async(
-                    lambda: spotify_oauth.refresh_access_token(token_info["refresh_token"])
-                )
-                if not refreshed:
-                    print("Failed to refresh Spotify token.")
-                    return
-
-            spotify_client = spotipy.Spotify(auth_manager=spotify_oauth)
-            current_playback = await retry_async(spotify_client.current_playback)
-
-            if current_playback and current_playback.get('is_playing') and current_playback.get('item'):
-                track_name = current_playback['item']['name']
-                artist_name = current_playback['item']['artists'][0]['name']
-
-                activity = discord.Activity(
-                    type=discord.ActivityType.streaming,
-                    name=track_name,
-                    details=f'Listening to {track_name}',
-                    state=f'by {artist_name}',
-                    url=twitch_url
-                )
-            else:
-                activity = discord.Streaming(name=f"{version} | /help", url=twitch_url)
-
-            await bot_client.change_presence(activity=activity)
-            await asyncio.sleep(10)
-
-        except requests.exceptions.ReadTimeout:
-            print("Spotify API timed out. Retrying in 30 seconds...")
-            await asyncio.sleep(30)
-
-        except (spotipy.SpotifyException, discord.HTTPException, asyncio.TimeoutError) as e:
-            print(f"Error updating Spotify activity: {e}")
-            traceback.print_exc()
-            await asyncio.sleep(30)
-
-        except (KeyError, ValueError, TypeError) as e:
-            print(f"Unexpected error: {e}")
-            traceback.print_exc()
-            await asyncio.sleep(30)
+    await client.change_presence(activity=discord.Streaming(name=f"{VERSION} | /help", url="https://twitch.tv/romi330"))
 
 @client.event
 async def on_message(message):
