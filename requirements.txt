@@ -3,5 +3,4 @@ aiohttp
 requests
 python-dotenv
 beautifulsoup4
-spotipy
 better_profanity
