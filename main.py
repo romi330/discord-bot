@@ -25,7 +25,7 @@ sp_oauth = SpotifyOAuth(
     scope="user-library-read user-read-playback-state user-read-currently-playing",
     cache_path=".cache",
     show_dialog=True,
-    requests_timeout=10  # Increase the timeout to 10 seconds
+    requests_timeout=20
 )
 
 sp = spotipy.Spotify(auth_manager=sp_oauth)
@@ -81,9 +81,22 @@ async def on_ready():
 async def update_spotify_activity(spotify_client):
     while True:
         try:
-            spotify_client = spotipy.Spotify(auth_manager=sp_oauth)
-            current_playback = spotify_client.current_playback()
+            token_info = sp_oauth.get_cached_token()
+            if sp_oauth.is_token_expired(token_info):
+                sp_oauth.refresh_access_token(token_info["refresh_token"])
 
+            spotify_client = spotipy.Spotify(auth_manager=sp_oauth)
+            for _ in range(3):
+                try:
+                    current_playback = spotify_client.current_playback()
+                    break
+                except requests.exceptions.ConnectionError as e:
+                    print(f"Connection error: {e}. Retrying...")
+                    await asyncio.sleep(5)
+            else:
+                print("Failed to connect to Spotify API after retries.")
+                return
+            
             if current_playback and current_playback.get('is_playing') and current_playback.get('item'):
                 track_name = current_playback['item']['name']
                 artist_name = current_playback['item']['artists'][0]['name']
