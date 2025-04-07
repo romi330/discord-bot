@@ -76,26 +76,37 @@ async def on_ready():
         traceback.print_exc()
 
     print("\nBot is ready and operational!")
-    client.loop.create_task(update_spotify_activity(sp))
+    client.loop.create_task(update_spotify_activity(sp, sp_oauth, client, VERSION, "https://twitch.tv/romi330"))
 
-async def update_spotify_activity(spotify_client):
+async def update_spotify_activity(spotify_client, spotify_oauth, bot_client, version, twitch_url):
+    async def retry_async(func, retries=3, delay=5, backoff=2):
+        for _ in range(retries):
+            try:
+                # Check if the function is a coroutine (asynchronous)
+                if asyncio.iscoroutinefunction(func):
+                    return await func()
+                else:
+                    return func()  # Call synchronous functions directly
+            except requests.exceptions.ConnectionError as e:
+                print(f"Error: {e}. Retrying in {delay} seconds...")
+                await asyncio.sleep(delay)
+                delay *= backoff
+        print(f"Failed after {retries} retries.")
+        return None
+
     while True:
         try:
-            token_info = sp_oauth.get_cached_token()
-            if sp_oauth.is_token_expired(token_info):
-                sp_oauth.refresh_access_token(token_info["refresh_token"])
+            token_info = spotify_oauth.get_cached_token()
+            if spotify_oauth.is_token_expired(token_info):
+                refreshed = await retry_async(
+                    lambda: spotify_oauth.refresh_access_token(token_info["refresh_token"])
+                )
+                if not refreshed:
+                    print("Failed to refresh Spotify token.")
+                    return
 
-            spotify_client = spotipy.Spotify(auth_manager=sp_oauth)
-            for _ in range(3):
-                try:
-                    current_playback = spotify_client.current_playback()
-                    break
-                except requests.exceptions.ConnectionError as e:
-                    print(f"Connection error: {e}. Retrying...")
-                    await asyncio.sleep(5)
-            else:
-                print("Failed to connect to Spotify API after retries.")
-                return
+            spotify_client = spotipy.Spotify(auth_manager=spotify_oauth)
+            current_playback = await retry_async(spotify_client.current_playback)  # Await the retry_async call
 
             if current_playback and current_playback.get('is_playing') and current_playback.get('item'):
                 track_name = current_playback['item']['name']
@@ -106,12 +117,12 @@ async def update_spotify_activity(spotify_client):
                     name=track_name,
                     details=f'Listening to {track_name}',
                     state=f'by {artist_name}',
-                    url="https://twitch.tv/romi330"
+                    url=twitch_url
                 )
             else:
-                activity = discord.Streaming(name=f"{VERSION} | /help", url="https://twitch.tv/romi330")
+                activity = discord.Streaming(name=f"{version} | /help", url=twitch_url)
 
-            await client.change_presence(activity=activity)
+            await bot_client.change_presence(activity=activity)
             await asyncio.sleep(10)
 
         except requests.exceptions.ReadTimeout:
