@@ -155,5 +155,6 @@ if __name__ == '__main__':
     asyncio.run(client.load_extension("cogs.modmail"))
     asyncio.run(client.load_extension("cogs.automod"))
     asyncio.run(client.load_extension("cogs.help"))
+    asyncio.run(client.load_extension("cogs.vote"))
     load_dotenv()
     client.run(os.getenv("TOKEN"))
