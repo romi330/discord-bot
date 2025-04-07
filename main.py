@@ -78,15 +78,14 @@ async def on_ready():
     print("\nBot is ready and operational!")
     client.loop.create_task(update_spotify_activity(sp, sp_oauth, client, VERSION, "https://twitch.tv/romi330"))
 
-async def update_spotify_activity(spotify_client, spotify_oauth, bot_client, version, twitch_url):
+async def update_spotify_activity(spotify_client, spotify_oauth, client, version, twitch_url):
     async def retry_async(func, retries=3, delay=5, backoff=2):
-        for _ in range(retries):
+        for attempt in range(retries):
             try:
-                # Check if the function is a coroutine (asynchronous)
                 if asyncio.iscoroutinefunction(func):
                     return await func()
                 else:
-                    return func()  # Call synchronous functions directly
+                    return func()
             except requests.exceptions.ConnectionError as e:
                 print(f"Error: {e}. Retrying in {delay} seconds...")
                 await asyncio.sleep(delay)
@@ -106,7 +105,7 @@ async def update_spotify_activity(spotify_client, spotify_oauth, bot_client, ver
                     return
 
             spotify_client = spotipy.Spotify(auth_manager=spotify_oauth)
-            current_playback = await retry_async(spotify_client.current_playback)  # Await the retry_async call
+            current_playback = await retry_async(spotify_client.current_playback)
 
             if current_playback and current_playback.get('is_playing') and current_playback.get('item'):
                 track_name = current_playback['item']['name']
@@ -122,7 +121,7 @@ async def update_spotify_activity(spotify_client, spotify_oauth, bot_client, ver
             else:
                 activity = discord.Streaming(name=f"{version} | /help", url=twitch_url)
 
-            await bot_client.change_presence(activity=activity)
+            await client.change_presence(activity=activity)
             await asyncio.sleep(10)
 
         except requests.exceptions.ReadTimeout:
