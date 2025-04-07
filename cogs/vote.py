@@ -25,7 +25,7 @@ class Vote(commands.Cog):
         await interaction.response.send_message(embed=embed)
 
     @app_commands.command(description="Check if you have voted for the bot.")
-    @app_commands.checks.cooldown(1, 2)
+    @app_commands.checks.cooldown(1, 30)
     async def checkvote(self, interaction: discord.Interaction):
         user_id = interaction.user.id
         bot_id = self.bot.user.id
@@ -38,7 +38,7 @@ class Vote(commands.Cog):
                     has_voted = data.get("voted", 0)
                     if has_voted:
                         embed = discord.Embed(
-                            title="Thank You for Voting! 🎉",
+                            title="Thank you for voting! 🎉",
                             description=f"Your vote has been recorded, {interaction.user.mention}!",
                             color=discord.Color.green()
                         )
