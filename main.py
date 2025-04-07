@@ -78,9 +78,9 @@ async def on_ready():
     print("\nBot is ready and operational!")
     client.loop.create_task(update_spotify_activity(sp, sp_oauth, client, VERSION, "https://twitch.tv/romi330"))
 
-async def update_spotify_activity(spotify_client, spotify_oauth, client, version, twitch_url):
+async def update_spotify_activity(spotify_client, spotify_oauth, bot_client, version, twitch_url):
     async def retry_async(func, retries=3, delay=5, backoff=2):
-        for attempt in range(retries):
+        for _ in range(retries):
             try:
                 if asyncio.iscoroutinefunction(func):
                     return await func()
@@ -121,7 +121,7 @@ async def update_spotify_activity(spotify_client, spotify_oauth, client, version
             else:
                 activity = discord.Streaming(name=f"{version} | /help", url=twitch_url)
 
-            await client.change_presence(activity=activity)
+            await bot_client.change_presence(activity=activity)
             await asyncio.sleep(10)
 
         except requests.exceptions.ReadTimeout:
