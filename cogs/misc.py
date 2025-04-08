@@ -53,7 +53,7 @@ class Misc(commands.Cog):
     async def invite(self, interaction: discord.Interaction):
         await interaction.response.send_message("https://discord.com/oauth2/authorize?client_id=1249144690461118627",
                                                 ephemeral=True)
-    
+
     @app_commands.command(description="Join the support server.")
     @app_commands.checks.cooldown(1, 2)
     async def support(self, interaction: discord.Interaction):
@@ -76,7 +76,7 @@ class Misc(commands.Cog):
         )
         embed.add_field(
             name="🛠️ Language",
-            value="Python 🐍",
+            value="Python 3.13.x 🐍",
             inline=True
         )
         embed.add_field(
