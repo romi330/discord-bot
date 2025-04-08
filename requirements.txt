@@ -4,3 +4,4 @@ requests
 python-dotenv
 beautifulsoup4
 better_profanity
+psutil

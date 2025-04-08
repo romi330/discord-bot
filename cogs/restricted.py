@@ -1,6 +1,8 @@
 import os
 import sys
 import asyncio
+import datetime
+import psutil
 import discord
 from discord.ext import commands
 from discord.ui import View, button
@@ -49,6 +51,14 @@ class DeveloperDashboardView(View):
     @discord.ui.button(label="Server Info", style=discord.ButtonStyle.green)
     async def serverinfo_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         await self.serverinfo(interaction)
+
+    @discord.ui.button(label="Broadcast Message", style=discord.ButtonStyle.green)
+    async def broadcast_button(self, interaction: discord.Interaction, _: discord.ui.Button):
+        await self.broadcast(interaction)
+    
+    @discord.ui.button(label="Bot Statistics", style=discord.ButtonStyle.green)
+    async def botstats_button(self, interaction: discord.Interaction, _: discord.ui.Button):
+        await self.botstats(interaction)
 
     @discord.ui.button(label="Restart Bot", style=discord.ButtonStyle.red)
     async def restart_button(self, interaction: discord.Interaction, _: discord.ui.Button):
@@ -223,6 +233,74 @@ class DeveloperDashboardView(View):
         )
         msg.set_footer(text="⚠️ - Some of these actions are global and will affect other servers!")
         await interaction.response.send_message(embed=msg, ephemeral=True)
+
+    async def broadcast(self, interaction: discord.Interaction):
+        class BroadcastCancelView(View):
+            def __init__(self):
+                super().__init__(timeout=60)
+                self.cancelled = False
+
+            @button(label="Cancel", style=discord.ButtonStyle.gray)
+            async def cancel_button(self, interaction: discord.Interaction, _: discord.ui.Button):
+                self.cancelled = True
+                self.stop()
+                await interaction.response.send_message("Broadcast operation cancelled.", ephemeral=True)
+
+        view = BroadcastCancelView()
+        await interaction.response.send_message(
+            "Please provide the message to broadcast to all servers. Or click Cancel to abort.",
+            view=view,
+            ephemeral=True
+        )
+
+        original_channel = interaction.channel
+
+        def check_message(m):
+            return m.author.id == interaction.user.id and m.channel.id == original_channel.id
+
+        try:
+            task1 = asyncio.create_task(self.bot.wait_for("message", check=check_message, timeout=60.0))
+            task2 = asyncio.create_task(view.wait())
+
+            done, pending = await asyncio.wait(
+                [task1, task2],
+                return_when=asyncio.FIRST_COMPLETED
+            )
+
+            for task in pending:
+                task.cancel()
+
+            if view.cancelled:
+                return
+
+            response_message = done.pop().result()
+            message = response_message.content
+
+            for guild in self.bot.guilds:
+                main_channel = guild.system_channel or next((channel for channel in guild.text_channels if channel.permissions_for(guild.me).send_messages), None)
+                if main_channel:
+                    try:
+                        await main_channel.send(f"📢 **Broadcast Message:** {message}")
+                    except discord.Forbidden:
+                        continue
+
+            await interaction.followup.send("Broadcast message sent to all servers.", ephemeral=True)
+
+        except asyncio.TimeoutError:
+            await interaction.followup.send("Operation timed out. Please try again.", ephemeral=True)
+
+    async def botstats(self, interaction: discord.Interaction):
+        process = psutil.Process(os.getpid())
+        memory_usage = process.memory_info().rss / 1024 ** 2
+        uptime = datetime.datetime.now(datetime.timezone.utc) - self.bot.start_time
+
+        embed = discord.Embed(title="Bot Statistics", color=discord.Color.blue())
+        embed.add_field(name="Uptime", value=str(uptime).split('.', maxsplit=1)[0], inline=False)
+        embed.add_field(name="Memory Usage", value=f"{memory_usage:.2f} MB", inline=False)
+        embed.add_field(name="Servers", value=f"{len(self.bot.guilds)}", inline=False)
+        embed.add_field(name="Users", value=f"{sum(g.member_count for g in self.bot.guilds)}", inline=False)
+
+        await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 async def setup(bot):

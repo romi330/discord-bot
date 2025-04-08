@@ -2,6 +2,7 @@ import asyncio
 import os
 import traceback
 import platform
+import datetime
 from dotenv import load_dotenv
 import discord
 from discord import app_commands
@@ -20,6 +21,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 @client.event
 async def on_ready():
     try:
+        client.start_time = datetime.datetime.now(datetime.timezone.utc)  # Set the start time
         print("Current working directory:", os.getcwd())
         synced = await client.tree.sync()  # Sync all slash commands
         print(f"Synced {len(synced)} application command(s)")
