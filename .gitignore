@@ -30,8 +30,5 @@ Thumbs.db
 .venv/
 __pycache__/
 
-# Ignore cache
-.cache
-
 # Ignore shell script files
 *.sh
