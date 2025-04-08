@@ -9,7 +9,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 
-VERSION = "v5.9"  # Update this version number for each release
+VERSION = "v5.10"  # Update this version number for each release
 intents = discord.Intents.default()
 intents.message_content = True  # Required for on_message, feedback, and modmail (privileged)
 client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)

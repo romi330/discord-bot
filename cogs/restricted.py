@@ -228,6 +228,8 @@ class DeveloperDashboardView(View):
                 "**Leave Server -** Leaves a server.\n"
                 "**Server Info -** Gives information and statistics about a server.\n"
                 "**Restart Bot -** Restarts the bot.\n"
+                "**Broadcast Message -** Broadcasts a message to all servers.\n"
+                "**Bot Statistics -** Displays bot statistics.\n"
             ),
             inline=False
         )
