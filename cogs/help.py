@@ -1,4 +1,3 @@
-# pylint: disable=unused-argument
 import discord
 from discord import app_commands
 from discord.ext import commands
@@ -30,7 +29,7 @@ class HelpView(discord.ui.View):
         self.message = await interaction.original_response()
 
     @discord.ui.button(label="General", style=discord.ButtonStyle.primary, emoji="📜")
-    async def general_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def general_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         embed = discord.Embed(
             title="📜 General Commands",
             description="Essential commands for everyone",
@@ -51,7 +50,7 @@ class HelpView(discord.ui.View):
         await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(label="Fun", style=discord.ButtonStyle.primary, emoji="🎉")
-    async def fun_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def fun_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         embed = discord.Embed(
             title="🎉 Fun Commands",
             description="Commands to keep your server entertained",
@@ -68,7 +67,7 @@ class HelpView(discord.ui.View):
         await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(label="Moderation", style=discord.ButtonStyle.primary, emoji="⚖️")
-    async def moderation_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def moderation_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         embed = discord.Embed(
             title="⚖️ Moderation Commands",
             description="Keep your server safe and organized",
@@ -86,7 +85,7 @@ class HelpView(discord.ui.View):
         await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(label="AutoMod", style=discord.ButtonStyle.primary, emoji="🛡️")
-    async def automoderation_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def automoderation_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         embed = discord.Embed(
             title="🛡️ AutoMod Setup Guide",
             description="Automatically moderate your server with powerful tools",
@@ -116,7 +115,7 @@ class HelpView(discord.ui.View):
         await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(label="ModMail", style=discord.ButtonStyle.primary, emoji="📩")
-    async def modmail_button(self, interaction: discord.Interaction, button: discord.ui.Button):
+    async def modmail_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         embed = discord.Embed(
             title="📩 ModMail System",
             description="Contact server moderators privately with your concerns",

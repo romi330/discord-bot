@@ -1,4 +1,3 @@
-# pylint: disable=unused-argument
 import json
 import datetime
 import time
@@ -256,7 +255,7 @@ class AutoModMainMenu(ui.View):
         self.rules = rules
 
     @ui.button(label="Feature Settings", style=discord.ButtonStyle.primary, emoji="⚙️")
-    async def feature_settings(self, interaction: discord.Interaction, button: ui.Button):
+    async def feature_settings(self, interaction: discord.Interaction, _: ui.Button):
         view = FeatureSettingsView(self.cog, self.guild_id, self.rules)
         await interaction.response.edit_message(
             content="🛡️ **AutoMod Feature Settings**\nToggle features on/off:",
@@ -264,7 +263,7 @@ class AutoModMainMenu(ui.View):
         )
 
     @ui.button(label="Word Filters", style=discord.ButtonStyle.primary, emoji="🔤")
-    async def word_filters(self, interaction: discord.Interaction, button: ui.Button):
+    async def word_filters(self, interaction: discord.Interaction, _: ui.Button):
         view = WordFiltersView(self.cog, self.guild_id, self.rules)
         await interaction.response.edit_message(
             content="🔤 **AutoMod Word Filters**\nManage blocked words:",
@@ -272,7 +271,7 @@ class AutoModMainMenu(ui.View):
         )
 
     @ui.button(label="Threshold Settings", style=discord.ButtonStyle.primary, emoji="📊")
-    async def threshold_settings(self, interaction: discord.Interaction, button: ui.Button):
+    async def threshold_settings(self, interaction: discord.Interaction, _: ui.Button):
         view = ThresholdSettingsView(self.cog, self.guild_id, self.rules)
         await interaction.response.edit_message(
             content="📊 **AutoMod Threshold Settings**\nConfigure detection thresholds:",
@@ -280,7 +279,7 @@ class AutoModMainMenu(ui.View):
         )
 
     @ui.button(label="View Status", style=discord.ButtonStyle.success, emoji="📋")
-    async def view_status(self, interaction: discord.Interaction, button: ui.Button):
+    async def view_status(self, interaction: discord.Interaction, _: ui.Button):
         features = {
             "Link Blocker": "blocked_links",
             "Spam Detection": "spam_detection",
@@ -327,7 +326,7 @@ class AutoModMainMenu(ui.View):
         await interaction.response.edit_message(content="", embed=embed, view=self)
 
     @ui.button(label="Close", style=discord.ButtonStyle.danger, emoji="✖️")
-    async def close_menu(self, interaction: discord.Interaction, button: ui.Button):
+    async def close_menu(self, interaction: discord.Interaction, _: ui.Button):
         await interaction.response.edit_message(content="AutoMod settings closed.", view=None)
 class FeatureSettingsView(ui.View):
     def __init__(self, cog, guild_id, rules):
@@ -389,7 +388,7 @@ class FeatureSettingsView(ui.View):
         await self.toggle_rule(interaction, "blocked_words", "Word Filter", button)
 
     @ui.button(label="Back", style=discord.ButtonStyle.secondary)
-    async def back_button(self, interaction: discord.Interaction, button: ui.Button):
+    async def back_button(self, interaction: discord.Interaction, _: ui.Button):
         view = AutoModMainMenu(self.cog, self.guild_id, self.rules)
         await interaction.response.edit_message(
             content="🛡️ **AutoMod Control Panel**\nSelect an option to configure:",
@@ -404,7 +403,7 @@ class WordFiltersView(ui.View):
         self.rules = rules
 
     @ui.button(label="View Blocked Words", style=discord.ButtonStyle.primary)
-    async def view_blocked_words(self, interaction: discord.Interaction, button: ui.Button):
+    async def view_blocked_words(self, interaction: discord.Interaction, _: ui.Button):
         blocked_words = self.rules.get("blocked_words_list", [])
         if not blocked_words:
             await interaction.response.send_message("No blocked words have been set.", ephemeral=True)
@@ -435,18 +434,18 @@ class WordFiltersView(ui.View):
                 await interaction.followup.send(part, ephemeral=True)
 
     @ui.button(label="Add Blocked Word", style=discord.ButtonStyle.green)
-    async def add_blocked_word(self, interaction: discord.Interaction, button: ui.Button):
+    async def add_blocked_word(self, interaction: discord.Interaction, _: ui.Button):
         modal = BlockedWordModal(title="Add Blocked Word", cog=self.cog, guild_id=self.guild_id, rules=self.rules)
         await interaction.response.send_modal(modal)
 
     @ui.button(label="Remove Blocked Word", style=discord.ButtonStyle.red)
-    async def remove_blocked_word(self, interaction: discord.Interaction, button: ui.Button):
+    async def remove_blocked_word(self, interaction: discord.Interaction, _: ui.Button):
         modal = BlockedWordModal(title="Remove Blocked Word", cog=self.cog, guild_id=self.guild_id,
                                  rules=self.rules, is_remove=True)
         await interaction.response.send_modal(modal)
 
     @ui.button(label="Back", style=discord.ButtonStyle.secondary)
-    async def back_button(self, interaction: discord.Interaction, button: ui.Button):
+    async def back_button(self, interaction: discord.Interaction, _: ui.Button):
         view = AutoModMainMenu(self.cog, self.guild_id, self.rules)
         await interaction.response.edit_message(
             content="🛡️ **AutoMod Control Panel**\nSelect an option to configure:",
@@ -510,7 +509,7 @@ class ThresholdSettingsView(ui.View):
             self.cog.save_rules()
 
     @ui.button(label="Spam Settings", style=discord.ButtonStyle.primary)
-    async def spam_settings(self, interaction: discord.Interaction, button: ui.Button):
+    async def spam_settings(self, interaction: discord.Interaction, _: ui.Button):
         modal = ThresholdModal(
             title="Spam Detection Settings",
             cog=self.cog,
@@ -521,7 +520,7 @@ class ThresholdSettingsView(ui.View):
         await interaction.response.send_modal(modal)
 
     @ui.button(label="Flood Settings", style=discord.ButtonStyle.primary)
-    async def flood_settings(self, interaction: discord.Interaction, button: ui.Button):
+    async def flood_settings(self, interaction: discord.Interaction, _: ui.Button):
         modal = ThresholdModal(
             title="Flood Control Settings",
             cog=self.cog,
@@ -532,7 +531,7 @@ class ThresholdSettingsView(ui.View):
         await interaction.response.send_modal(modal)
 
     @ui.button(label="Emoji Limit", style=discord.ButtonStyle.primary)
-    async def emoji_settings(self, interaction: discord.Interaction, button: ui.Button):
+    async def emoji_settings(self, interaction: discord.Interaction, _: ui.Button):
         modal = EmojiLimitModal(
             title="Emoji Limit Settings",
             cog=self.cog,
@@ -542,7 +541,7 @@ class ThresholdSettingsView(ui.View):
         await interaction.response.send_modal(modal)
 
     @ui.button(label="Back", style=discord.ButtonStyle.secondary)
-    async def back_button(self, interaction: discord.Interaction, button: ui.Button):
+    async def back_button(self, interaction: discord.Interaction, _: ui.Button):
         view = AutoModMainMenu(self.cog, self.guild_id, self.rules)
         await interaction.response.edit_message(
             content="🛡️ **AutoMod Control Panel**\nSelect an option to configure:",

@@ -52,13 +52,13 @@ class DeveloperDashboardView(View):
     async def serverinfo_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         await self.serverinfo(interaction)
 
-    @discord.ui.button(label="Broadcast Message", style=discord.ButtonStyle.green)
-    async def broadcast_button(self, interaction: discord.Interaction, _: discord.ui.Button):
-        await self.broadcast(interaction)
-    
     @discord.ui.button(label="Bot Statistics", style=discord.ButtonStyle.green)
     async def botstats_button(self, interaction: discord.Interaction, _: discord.ui.Button):
         await self.botstats(interaction)
+
+    @discord.ui.button(label="Broadcast Message", style=discord.ButtonStyle.red)
+    async def broadcast_button(self, interaction: discord.Interaction, _: discord.ui.Button):
+        await self.broadcast(interaction)
 
     @discord.ui.button(label="Restart Bot", style=discord.ButtonStyle.red)
     async def restart_button(self, interaction: discord.Interaction, _: discord.ui.Button):
