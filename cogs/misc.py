@@ -20,26 +20,39 @@ class Misc(commands.Cog):
     @app_commands.checks.cooldown(1, 2)
     async def paul(self, interaction: discord.Interaction):
         msg = discord.Embed(
-            title="Paul Changelog and Info.", color=discord.Colour.blurple()
+            title="Changelog and Information", color=discord.Colour.blurple()
         )
         msg.add_field(name=f"Version {VERSION} | Fifth Release", value="", inline=False)
         msg.add_field(
             name="What's changed?",
-            value="**-** Updated the automod system for better moderation capabilities.\n"
-            "**-** Debugged and fixed several issues across the bot.\n",
-            inline=False,
-        )
-        msg.add_field(
-            name="What's fixed?",
-            value="**-** Resolved critical bugs affecting bot stability.\n"
-            "**-** Improved overall performance and reliability.\n",
+            value=(
+                "**•** Enhanced the AutoMod system for better moderation capabilities.\n"
+                "**•** Improved the `/help` command with a new interactive UI.\n"
+                "**•** Added new moderation commands like `/timeout` and `/announce`.\n"
+            ),
             inline=True,
         )
         msg.add_field(
-            name="Thank you for using Paul!",
-            value="**-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-**\n"
-            "Credits: `ronenlazowski`.\n",
+            name="What's fixed?",
+            value=(
+                "**•** Resolved critical bugs affecting bot stability.\n"
+                "**•** Fixed issues with command cooldowns and permissions.\n"
+                "**•** Improved error handling for better user feedback.\n"
+            ),
+            inline=True,
+        )
+        msg.add_field(
+            name="What's new?",
+            value=(
+                "**•** Added `/vote` and `/checkvote` commands for top.gg integration.\n"
+                "**•** Introduced `/feedback` and `/modmail` for user interaction.\n"
+                "**•** New `/source` command to view the bot's open-source repository.\n"
+            ),
             inline=False,
+        )
+        msg.set_footer(
+            text="Made with ❤️ by Ronen Lazowski • Open-source forever",
+            icon_url="https://cdn.discordapp.com/avatars/1357038796532875406/9c8bc91959694cbcfa7b746e80400e1f.png"
         )
 
         await interaction.response.send_message(embed=msg, ephemeral=True)

@@ -12,23 +12,12 @@ class Vote(commands.Cog):
         load_dotenv()
         self.top_gg_api_token = os.getenv("TOP_GG_API_TOKEN")
 
-    @app_commands.command(description="Vote for me!")
-    @app_commands.checks.cooldown(1, 2)
-    async def vote(self, interaction: discord.Interaction):
-        bot_id = self.bot.user.id
-        vote_url = f"https://top.gg/bot/{bot_id}/vote"
-        embed = discord.Embed(
-            title="Vote for the Bot!",
-            description=f"Support the bot by voting on [top.gg]({vote_url}). Thank you!",
-            color=discord.Color.dark_gold(),
-        )
-        await interaction.response.send_message(embed=embed)
-
-    @app_commands.command(description="Check if you have voted for the bot.")
+    @app_commands.command(description="Vote for the bot or check your vote status.")
     @app_commands.checks.cooldown(1, 30)
-    async def checkvote(self, interaction: discord.Interaction):
+    async def vote(self, interaction: discord.Interaction):
         user_id = interaction.user.id
         bot_id = self.bot.user.id
+        vote_url = f"https://top.gg/bot/{bot_id}/vote"
         headers = {"Authorization": self.top_gg_api_token}
 
         async with aiohttp.ClientSession() as session:
@@ -49,7 +38,7 @@ class Vote(commands.Cog):
                     else:
                         embed = discord.Embed(
                             title="You Haven't Voted Yet!",
-                            description=f"{interaction.user.mention}, you can vote for the bot [here](https://top.gg/bot/{bot_id}/vote).",
+                            description=f"{interaction.user.mention}, you can vote for the bot [here]({vote_url}).",
                             color=discord.Color.red(),
                         )
                         embed.set_footer(

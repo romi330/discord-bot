@@ -9,7 +9,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 
-VERSION = "v5.10"
+VERSION = "v5.14"
 intents = discord.Intents.default()
 intents.message_content = (
     True
@@ -81,7 +81,7 @@ async def on_ready():
                 name="Open-source forever | /help", url="https://twitch.tv/romi330"
             )
         )
-        await asyncio.sleep(10)
+        await asyncio.sleep(30)
 
 
 @client.event
