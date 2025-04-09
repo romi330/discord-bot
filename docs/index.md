@@ -10,9 +10,11 @@
 
 Whether you're looking for:
 - 🚨 **Advanced AutoMod Features**
+
 - 🏆 **Clash of Clans Integration**
-- 🛠️ **Reliable Moderation Assistant**  
-  
+
+- 🛠️ **Reliable Moderation Assistant**
+
 **Paul handles everything effortlessly.**
 
 ---
