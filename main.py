@@ -9,14 +9,22 @@ from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 
-VERSION = "v5.14"
+VERSION = "v6.3"
 intents = discord.Intents.default()
 intents.message_content = (
     True
 )
 client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)
-LOG_CHANNEL = 1353416165350834278
+
 load_dotenv()
+LOG_CHANNEL = os.getenv("LOG_CHANNEL")
+
+try:
+    LOG_CHANNEL = int(LOG_CHANNEL) if LOG_CHANNEL else None
+except ValueError:
+    LOG_CHANNEL = None
+    print("Invalid LOG_CHANNEL value. Ensure it is a valid channel ID.")
+
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 
@@ -64,6 +72,8 @@ async def on_ready():
             )
 
             await log_channel_obj.send(embed=startup_embed)
+        else:
+            print("Log channel not found or invalid LOG_CHANNEL value. Skipping log message.")
 
     except (discord.HTTPException, discord.ClientException, OSError) as e:
         print(f"Error in on_ready: {e}")
@@ -78,7 +88,7 @@ async def on_ready():
         await asyncio.sleep(180)
         await client.change_presence(
             activity=discord.Streaming(
-                name="Open-source forever | /help", url="https://twitch.tv/romi330"
+                name=f"{VERSION} | /paul", url="https://twitch.tv/romi330"
             )
         )
         await asyncio.sleep(30)

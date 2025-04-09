@@ -3,12 +3,17 @@ import sys
 import asyncio
 import datetime
 import psutil
+from dotenv import load_dotenv
 import discord
 from discord.ext import commands
 from discord.ui import View, button
 
-admins = [445899149997768735]
-
+load_dotenv()
+try:
+    admins = list(map(int, os.getenv("ADMINS", "").split(",")))
+except ValueError:
+    admins = []
+    print("Invalid ADMINS environment variable. Ensure it contains valid IDs.")
 
 def developer_only():
     async def predicate(ctx):

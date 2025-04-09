@@ -22,15 +22,15 @@ class Misc(commands.Cog):
         msg = discord.Embed(
             title="Changelog and Information", color=discord.Colour.blurple()
         )
-        msg.add_field(name=f"Version {VERSION} | Fifth Release", value="", inline=False)
+        msg.add_field(name=f"Version {VERSION} | Sixth Release", value="", inline=False)
         msg.add_field(
-            name="What's changed?",
-            value=(
-                "**•** Enhanced the AutoMod system for better moderation capabilities.\n"
-                "**•** Improved the `/help` command with a new interactive UI.\n"
-                "**•** Added new moderation commands like `/timeout` and `/announce`.\n"
-            ),
-            inline=True,
+        name="What's changed?",
+        value=(
+            "**•** Enhanced the AutoMod system for better moderation capabilities.\n"
+            "**•** Created the `/help` command with a new interactive UI.\n"
+            "**•** Added new moderation commands like `/timeout` and `/announce`.\n"
+        ),
+        inline=True,
         )
         msg.add_field(
             name="What's fixed?",
@@ -44,8 +44,8 @@ class Misc(commands.Cog):
         msg.add_field(
             name="What's new?",
             value=(
-                "**•** Added `/vote` and `/checkvote` commands for top.gg integration.\n"
-                "**•** Introduced `/feedback` and `/modmail` for user interaction.\n"
+                "**•** Improved `/vote` command for top.gg integration.\n"
+                "**•** Improved `/automod` and `modmail` commands for users.\n"
                 "**•** New `/source` command to view the bot's open-source repository.\n"
             ),
             inline=False,

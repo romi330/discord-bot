@@ -57,11 +57,6 @@ class HelpView(discord.ui.View):
             name="`/vote`", value="Vote for the bot on top.gg", inline=False
         )
         embed.add_field(
-            name="`/checkvote`",
-            value="Check if you have voted for the bot",
-            inline=False,
-        )
-        embed.add_field(
             name="`/support`", value="Join the support server", inline=False
         )
         embed.add_field(

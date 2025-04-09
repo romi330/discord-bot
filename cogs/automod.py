@@ -1,3 +1,4 @@
+import asyncio
 import json
 import datetime
 import time
@@ -8,6 +9,7 @@ from better_profanity import profanity
 import discord
 from discord import app_commands, ui, Embed
 from discord.ext import commands
+import aiofiles
 
 
 class AutoMod(commands.Cog):
@@ -22,31 +24,40 @@ class AutoMod(commands.Cog):
 
         profanity.load_censor_words()
 
-        self.load_rules()
+        self.file_lock = asyncio.Lock()
 
-    def load_rules(self):
-        if os.path.exists(self.json_file):
-            with open(self.json_file, "r", encoding="utf-8") as file:
-                self.rules = json.load(file)
-        else:
-            self.rules = {}
+        self.rules = {}
 
-        default_thresholds = {
-            "spam_messages": 5,
-            "spam_seconds": 10,
-            "flood_messages": 5,
-            "flood_seconds": 5,
-            "emoji_limit": 5,
-        }
+    @commands.Cog.listener()
+    async def on_ready(self):
+        await self.load_rules()
 
-        for _, guild_rules in self.rules.items():
-            guild_rules.setdefault("thresholds", {})
-            for key, value in default_thresholds.items():
-                guild_rules["thresholds"].setdefault(key, value)
+    async def load_rules(self):
+        async with self.file_lock:
+            if os.path.exists(self.json_file):
+                async with aiofiles.open(self.json_file, "r", encoding="utf-8") as file:
+                    content = await file.read()
+                    self.rules = json.loads(content)
+            else:
+                self.rules = {}
 
-    def save_rules(self):
-        with open(self.json_file, "w", encoding="utf-8") as file:
-            json.dump(self.rules, file, indent=4)
+            default_thresholds = {
+                "spam_messages": 5,
+                "spam_seconds": 10,
+                "flood_messages": 5,
+                "flood_seconds": 5,
+                "emoji_limit": 5,
+            }
+
+            for _, guild_rules in self.rules.items():
+                guild_rules.setdefault("thresholds", {})
+                for key, value in default_thresholds.items():
+                    guild_rules["thresholds"].setdefault(key, value)
+
+    async def save_rules(self):
+        async with self.file_lock:
+            async with aiofiles.open(self.json_file, "w", encoding="utf-8") as file:
+                await file.write(json.dumps(self.rules, indent=4))
 
     def cleanup_message_cache(self):
         current_time = time.time()
@@ -91,7 +102,15 @@ class AutoMod(commands.Cog):
     )
     @app_commands.default_permissions(manage_messages=True)
     async def automod_settings(self, interaction: discord.Interaction):
-        if not interaction.guild.me.guild_permissions.manage_messages:
+        if interaction.guild is None:
+            await interaction.response.send_message(
+                "This command can only be used in a server.", ephemeral=True
+            )
+            return
+
+        bot_member = await interaction.guild.fetch_member(self.bot.user.id)
+
+        if not bot_member.guild_permissions.manage_messages:
             await interaction.response.send_message(
                 "⚠️ I don't have the 'Manage Messages' permission, which is required for AutoMod to function properly.",
                 ephemeral=True,
@@ -403,7 +422,7 @@ class FeatureSettingsView(ui.View):
         new_value = not current_value
         self.rules[rule_name] = new_value
         self.cog.rules.setdefault(self.guild_id, {})[rule_name] = new_value
-        self.cog.save_rules()
+        await self.cog.save_rules()
 
         button.style = (
             discord.ButtonStyle.green if new_value else discord.ButtonStyle.red
@@ -559,12 +578,10 @@ class BlockedWordModal(ui.Modal):
         if self.is_remove:
             if word in self.rules["blocked_words_list"]:
                 self.rules["blocked_words_list"].remove(word)
-                self.cog.rules.setdefault(self.guild_id, {})["blocked_words_list"] = (
-                    self.rules["blocked_words_list"]
-                )
-                self.cog.save_rules()
+                await self.cog.save_rules()
                 await interaction.response.send_message(
-                    f"Removed `{word}` from blocked words.", ephemeral=True
+                    f"`{word}` has been removed from the blocked words list.",
+                    ephemeral=True,
                 )
             else:
                 await interaction.response.send_message(
@@ -573,12 +590,10 @@ class BlockedWordModal(ui.Modal):
         else:
             if word not in self.rules["blocked_words_list"]:
                 self.rules["blocked_words_list"].append(word)
-                self.cog.rules.setdefault(self.guild_id, {})["blocked_words_list"] = (
-                    self.rules["blocked_words_list"]
-                )
-                self.cog.save_rules()
+                await self.cog.save_rules()
                 await interaction.response.send_message(
-                    f"Added `{word}` to blocked words.", ephemeral=True
+                    f"`{word}` has been added to the blocked words list.",
+                    ephemeral=True,
                 )
             else:
                 await interaction.response.send_message(

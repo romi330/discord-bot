@@ -42,6 +42,12 @@ class ModmailModal(ui.Modal):
         self.add_item(self.message)
 
     async def on_submit(self, interaction: Interaction):
+        if interaction.guild is None:
+            await interaction.response.send_message(
+                "This command can only be used in a server.", ephemeral=True
+            )
+            return
+
         config = load_config()
         guild_id = str(interaction.guild.id)
         log_channel_id = config.get(guild_id)
