@@ -70,7 +70,7 @@ class HelpView(discord.ui.View):
         embed.set_footer(text="Use / before each command • Page 1/5")
         embed.set_thumbnail(
             url="https://cdn.discordapp.com/avatars/1249144690461118627/9a3afbbef2a17cd9b637e951a5277393.png"
-        )  # Replace with your bot's avatar URL
+        )
         await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(label="Fun", style=discord.ButtonStyle.primary, emoji="🎉")
@@ -103,7 +103,7 @@ class HelpView(discord.ui.View):
         embed.set_footer(text="Use / before each command • Page 2/5")
         embed.set_thumbnail(
             url="https://cdn.discordapp.com/avatars/1249144690461118627/9a3afbbef2a17cd9b637e951a5277393.png"
-        )  # Replace with your bot's avatar URL
+        )
         await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(label="Moderation", style=discord.ButtonStyle.primary, emoji="⚖️")
@@ -133,7 +133,7 @@ class HelpView(discord.ui.View):
         embed.set_footer(text="Use / before each command • Page 3/5")
         embed.set_thumbnail(
             url="https://cdn.discordapp.com/avatars/1249144690461118627/9a3afbbef2a17cd9b637e951a5277393.png"
-        )  # Replace with your bot's avatar URL
+        )
         await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(label="AutoMod", style=discord.ButtonStyle.primary, emoji="🛡️")
@@ -173,7 +173,7 @@ class HelpView(discord.ui.View):
         embed.set_footer(text="Use / before each command • Page 4/5")
         embed.set_thumbnail(
             url="https://cdn.discordapp.com/avatars/1249144690461118627/9a3afbbef2a17cd9b637e951a5277393.png"
-        )  # Replace with your bot's avatar URL
+        )
         await interaction.response.edit_message(embed=embed, view=self)
 
     @discord.ui.button(label="ModMail", style=discord.ButtonStyle.primary, emoji="📩")

@@ -43,7 +43,6 @@ class Fun(commands.Cog):
     @app_commands.command(description="Dad jokes!")
     @app_commands.checks.cooldown(1, 2)
     async def dadjoke(self, interaction: discord.Interaction):
-        # Tells a dad joke.
         data = bs(
             requests.get("https://icanhazdadjoke.com/", timeout=10).text, "html.parser"
         )
@@ -63,7 +62,6 @@ class Fun(commands.Cog):
     async def pfp(
         self, interaction: discord.Interaction, *, member: discord.User = None
     ):
-        # Gets the pfp of the member that you have selected, must be in your server.
         if member == self.bot.user:
             await interaction.response.send_message(":unamused:", ephemeral=True)
             return

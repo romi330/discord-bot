@@ -9,10 +9,10 @@ from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 
-VERSION = "v5.10"  # Update this version number for each release
+VERSION = "v5.10"
 intents = discord.Intents.default()
 intents.message_content = (
-    True  # Required for on_message, feedback, and modmail (privileged)
+    True
 )
 client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)
 LOG_CHANNEL = 1353416165350834278
@@ -25,9 +25,9 @@ async def on_ready():
     try:
         client.start_time = datetime.datetime.now(
             datetime.timezone.utc
-        )  # Set the start time
+        )
         print("Current working directory:", os.getcwd())
-        synced = await client.tree.sync()  # Sync all slash commands
+        synced = await client.tree.sync()
         print(f"Synced {len(synced)} application command(s)")
 
         print("Bot Information:")

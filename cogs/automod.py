@@ -593,7 +593,6 @@ class ThresholdSettingsView(ui.View):
         self.guild_id = guild_id
         self.rules = rules
 
-        # Ensure thresholds exist in the rules
         if "thresholds" not in self.rules:
             self.rules["thresholds"] = {
                 "spam_messages": 5,
