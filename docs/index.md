@@ -83,8 +83,8 @@ Let Paul take care of moderation and integrations while you focus on your commun
 
 📜 **GitHub:** [Paul Bot Repository](https://github.com/ronenlazowski/paul)  
 🌍 **Website:** [www.ronenlaz.com](https://www.ronenlaz.com)  
-💬 **Discord Support:** [Join our Discord](https://discord.com/invite/8hYZUtUxme)
-📚 **Documentation:** [lazowski.me](https://lazowski.me)
+💬 **Discord Support:** [Join our Discord](https://discord.com/invite/8hYZUtUxme)  
+📚 **Documentation:** [lazowski.me](https://lazowski.me)  
 
 ---
 
