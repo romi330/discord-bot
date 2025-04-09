@@ -1,0 +1,12 @@
+site_name: Paul Documentation and Information
+site_url: https://ronenlazowski.github.io/paul/
+use_directory_urls: true
+
+theme:
+  name: material
+
+nav:
+  - Home: index.md
+  - Privacy Policy: PRIVACY.md
+  - Terms of Service: TERMS.md
+  - Required Intents: INTENTS.md
