@@ -20,7 +20,7 @@ class Vote(commands.Cog):
         embed = discord.Embed(
             title="Vote for the Bot!",
             description=f"Support the bot by voting on [top.gg]({vote_url}). Thank you!",
-            color=discord.Color.dark_gold()
+            color=discord.Color.dark_gold(),
         )
         await interaction.response.send_message(embed=embed)
 
@@ -32,7 +32,10 @@ class Vote(commands.Cog):
         headers = {"Authorization": self.top_gg_api_token}
 
         async with aiohttp.ClientSession() as session:
-            async with session.get(f"https://top.gg/api/bots/{bot_id}/check?userId={user_id}", headers=headers) as response:
+            async with session.get(
+                f"https://top.gg/api/bots/{bot_id}/check?userId={user_id}",
+                headers=headers,
+            ) as response:
                 if response.status == 200:
                     data = await response.json()
                     has_voted = data.get("voted", 0)
@@ -40,21 +43,23 @@ class Vote(commands.Cog):
                         embed = discord.Embed(
                             title="Thank you for voting! 🎉",
                             description=f"Your vote has been recorded, {interaction.user.mention}!",
-                            color=discord.Color.green()
+                            color=discord.Color.green(),
                         )
                         embed.set_footer(text="Your support helps the bot grow!")
                     else:
                         embed = discord.Embed(
                             title="You Haven't Voted Yet!",
                             description=f"{interaction.user.mention}, you can vote for the bot [here](https://top.gg/bot/{bot_id}/vote).",
-                            color=discord.Color.red()
+                            color=discord.Color.red(),
                         )
-                        embed.set_footer(text="Voting helps the bot grow and unlocks rewards!")
+                        embed.set_footer(
+                            text="Voting helps the bot grow and unlocks rewards!"
+                        )
                 else:
                     embed = discord.Embed(
                         title="Error Checking Vote Status",
                         description="Sorry, I couldn't check your vote status. Please try again later.",
-                        color=discord.Color.orange()
+                        color=discord.Color.orange(),
                     )
                     embed.set_footer(text=f"Error Code: {response.status}")
 
