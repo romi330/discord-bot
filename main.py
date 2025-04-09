@@ -75,10 +75,10 @@ async def on_ready():
                 name=f"{VERSION} | /help", url="https://twitch.tv/romi330"
             )
         )
-        await asyncio.sleep(10)
+        await asyncio.sleep(180)
         await client.change_presence(
             activity=discord.Streaming(
-                name="Open-source Forever", url="https://twitch.tv/romi330"
+                name="Open-source forever | /help", url="https://twitch.tv/romi330"
             )
         )
         await asyncio.sleep(10)
