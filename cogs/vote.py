@@ -30,11 +30,11 @@ class Vote(commands.Cog):
                     has_voted = data.get("voted", 0)
                     if has_voted:
                         embed = discord.Embed(
-                            title="Thank you for voting! 🎉",
-                            description=f"Your vote has been recorded, {interaction.user.mention}!",
+                            title="You've voted in last 12 hours! 🎉",
+                            description=f"Thank you, your support means so much, {interaction.user.mention}!",
                             color=discord.Color.green(),
                         )
-                        embed.set_footer(text="Your support helps the bot grow!")
+                        embed.set_footer(text="Voting helps the bot grow and stay up to date!")
                     else:
                         embed = discord.Embed(
                             title="You Haven't Voted Yet!",
@@ -42,7 +42,7 @@ class Vote(commands.Cog):
                             color=discord.Color.red(),
                         )
                         embed.set_footer(
-                            text="Voting helps the bot grow and unlocks rewards!"
+                            text="Voting helps the bot grow!"
                         )
                 else:
                     embed = discord.Embed(
@@ -52,7 +52,7 @@ class Vote(commands.Cog):
                     )
                     embed.set_footer(text=f"Error Code: {response.status}")
 
-                await interaction.response.send_message(embed=embed)
+                await interaction.response.send_message(embed=embed, ephemeral=True)
 
 
 async def setup(bot):
