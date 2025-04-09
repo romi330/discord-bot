@@ -74,7 +74,7 @@ Let Paul take care of moderation and integrations while you focus on your commun
 - [Terms of Service](docs/TERMS.md)
 - [Required Intents](docs/INTENTS.md)
 
---
+---
 
 ## 🛠️ Developer & Support
 
