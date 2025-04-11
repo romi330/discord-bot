@@ -85,6 +85,12 @@ class DeveloperDashboardView(View):
     ):
         await self.restart(interaction)
 
+    @discord.ui.button(label="Test Broadcast", style=discord.ButtonStyle.gray)
+    async def test_broadcast_button(
+        self, interaction: discord.Interaction, _: discord.ui.Button
+    ):
+        await self.test_broadcast(interaction)
+
     async def servers(self, interaction: discord.Interaction):
         servers = [f"- {guild.name} - ({guild.id})" for guild in self.bot.guilds]
         try:
@@ -357,7 +363,22 @@ class DeveloperDashboardView(View):
                 )
                 if main_channel:
                     try:
-                        await main_channel.send(f"📢 **Broadcast Message:** {message}")
+                        embed = discord.Embed(
+                            title="📢 Broadcast Message",
+                            color=discord.Color.red(),
+                        )
+                        embed.add_field(
+                            name=message,
+                            value="",
+                            inline=False,
+                        )
+                        embed.set_footer(
+                            text="This is a global broadcast message. It has been sent to every server."
+                        )
+                        await interaction.followup.send(
+                            "Here is your broadcast message:", embed=embed, ephemeral=True
+                        )
+                        await main_channel.send("📢 **Broadcast Message:**", embed=embed)
                     except discord.Forbidden:
                         continue
 
@@ -390,6 +411,78 @@ class DeveloperDashboardView(View):
         )
 
         await interaction.response.send_message(embed=embed, ephemeral=True)
+
+    async def test_broadcast(self, interaction: discord.Interaction):
+        class TestBroadcastView(View):
+            def __init__(self):
+                super().__init__(timeout=60)
+                self.cancelled = False
+                self.test_message = None
+
+            @button(label="Cancel", style=discord.ButtonStyle.gray)
+            async def cancel_button(
+                self, interaction: discord.Interaction, _: discord.ui.Button
+            ):
+                self.cancelled = True
+                self.stop()
+                await interaction.response.send_message(
+                    "Test broadcast operation cancelled.", ephemeral=True
+                )
+
+        view = TestBroadcastView()
+        await interaction.response.send_message(
+            "Please provide the message to test broadcast in this channel. Or click Cancel to abort.",
+            view=view,
+            ephemeral=True,
+        )
+
+        original_channel = interaction.channel
+
+        def check_message(m):
+            return (
+                m.author.id == interaction.user.id
+                and m.channel.id == original_channel.id
+            )
+
+        try:
+            task1 = asyncio.create_task(
+                self.bot.wait_for("message", check=check_message, timeout=60.0)
+            )
+            task2 = asyncio.create_task(view.wait())
+
+            done, pending = await asyncio.wait(
+                [task1, task2], return_when=asyncio.FIRST_COMPLETED
+            )
+
+            for task in pending:
+                task.cancel()
+
+            if view.cancelled:
+                return
+
+            response_message = done.pop().result()
+            message = response_message.content
+
+            embed = discord.Embed(
+                title="📢 Test Broadcast Message",
+                color=discord.Color.orange(),
+            )
+            embed.add_field(
+                name=message,
+                value="",
+                inline=False,
+            )
+            embed.set_footer(
+                text="This is a test broadcast message. It will not be sent to other servers."
+            )
+            await interaction.followup.send(
+                "Here is your test broadcast message:", embed=embed, ephemeral=True
+            )
+
+        except asyncio.TimeoutError:
+            await interaction.followup.send(
+                "Operation timed out. Please try again.", ephemeral=True
+            )
 
 
 async def setup(bot):
