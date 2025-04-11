@@ -22,15 +22,16 @@ class Misc(commands.Cog):
         msg = discord.Embed(
             title="Changelog and Information", color=discord.Colour.blurple()
         )
-        msg.add_field(name=f"Version {VERSION} | Sixth Release", value="", inline=False)
+        msg.add_field(name=f"Version {VERSION} | Seventh Release", value="", inline=False)
         msg.add_field(
-        name="What's changed?",
-        value=(
-            "**•** Enhanced the AutoMod system for better moderation capabilities.\n"
-            "**•** Created the `/help` command with a new interactive UI.\n"
-            "**•** Added new moderation commands like `/timeout` and `/announce`.\n"
-        ),
-        inline=True,
+            name="What's changed?",
+            value=(
+                "**•** Enhanced the AutoMod system for better moderation capabilities.\n"
+                "**•** Improved the `/help` command with a new interactive UI.\n"
+                "**•** Added new moderation commands like `/timeout` and `/announce`.\n"
+                "**•** Optimized bot performance for large-scale servers.\n"
+            ),
+            inline=True,
         )
         msg.add_field(
             name="What's fixed?",
@@ -38,21 +39,23 @@ class Misc(commands.Cog):
                 "**•** Resolved critical bugs affecting bot stability.\n"
                 "**•** Fixed issues with command cooldowns and permissions.\n"
                 "**•** Improved error handling for better user feedback.\n"
+                "**•** Addressed API rate-limiting issues for smoother operation.\n"
             ),
             inline=True,
         )
         msg.add_field(
             name="What's new?",
             value=(
-                "**•** Improved `/vote` command for top.gg integration.\n"
-                "**•** Improved `/automod` and `modmail` commands for users.\n"
-                "**•** New `/source` command to view the bot's open-source repository.\n"
+                "**•** Introduced Clash of Clans integration with `/clash` command.\n"
+                "**•** Added interactive buttons for Player Info, Clan Info, and War Logs.\n"
+                "**•** New Cancel button to stop ongoing commands.\n"
+                "**•** Improved `/source` command to showcase the bot's open-source repository.\n"
             ),
             inline=False,
         )
         msg.set_footer(
             text="Made with ❤️ by Ronen Lazowski • Open-source forever",
-            icon_url="https://cdn.discordapp.com/avatars/1357038796532875406/9c8bc91959694cbcfa7b746e80400e1f.png"
+            icon_url="https://cdn.discordapp.com/avatars/1357038796532875406/9c8bc91959694cbcfa7b746e80400e1f.png",
         )
 
         await interaction.response.send_message(embed=msg, ephemeral=True)

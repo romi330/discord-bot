@@ -87,10 +87,7 @@ class HelpView(discord.ui.View):
             name="`/affirmation`", value="Get a positive affirmation", inline=False
         )
         embed.add_field(
-            name="`/player`", value="Get your Clash of Clans player data", inline=False
-        )
-        embed.add_field(
-            name="`/clan`", value="Get Clash of Clans clan data", inline=False
+            name="`/clash`", value="Get advanced Clash of Clans data", inline=False
         )
         embed.add_field(
             name="`/feedback`", value="Give feedback to the developer", inline=False
