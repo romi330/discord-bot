@@ -57,8 +57,7 @@ Let Paul take care of moderation and integrations while you focus on your commun
 
 ### 🎮 **Clash of Clans**
 ```
-/clan #TAG - Get details about a Clash of Clans clan
-/player #TAG - Fetch stats of a specific player
+/clash - Get details about a Clash of Clans clan, player, and war log.
 ```
 
 ### 🎭 **Fun & Utility**
