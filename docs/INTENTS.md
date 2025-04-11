@@ -15,13 +15,13 @@ We implement a custom automoderation system that detects and moderates inappropr
 - Excessive emoji usage (emoji spam)  
 - Message flooding  
 
-These moderation tools rely heavily on analyzing `message.content` to identify and act on violations in real-time.
+These moderation tools rely heavily on analyzing `message_content` to identify and act on violations in real-time.
 
 ---
 
 ## 🤖 User Interaction
 
-The bot listens for mentions (e.g., `@paul`) and provides an automated responses. This enhances user experience and accessibility, especially for new members. Processing `message.content` is necessary to identify and handle these mentions properly.
+The bot listens for mentions (e.g., `@paul`) and provides an automated responses. This enhances user experience and accessibility, especially for new members. Processing `message_content` is necessary to identify and handle these mentions properly.
 
 ---
 
@@ -33,7 +33,7 @@ To maintain a safe and spam-free environment, the bot analyzes both message cont
 - Prevent raids or spam attacks  
 - Alert moderators automatically  
 
-These protections require access to `message.content`.
+These protections require access to `message_content`.
 
 ---
 
