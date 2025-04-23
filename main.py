@@ -9,7 +9,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 
-VERSION = "v7.1"
+VERSION = "v7.2"
 intents = discord.Intents.default()
 intents.message_content = (
     True
@@ -85,14 +85,31 @@ async def on_ready():
                 name=f"{VERSION} | /help", url="https://twitch.tv/romi330"
             )
         )
-        await asyncio.sleep(180)
+        await asyncio.sleep(30)
         await client.change_presence(
             activity=discord.Streaming(
                 name=f"{VERSION} | /paul", url="https://twitch.tv/romi330"
             )
         )
         await asyncio.sleep(30)
-
+        await client.change_presence(
+            activity=discord.Streaming(
+                name=f"{VERSION} | /source", url="https://twitch.tv/romi330"
+            )
+        )
+        await asyncio.sleep(30)
+        await client.change_presence(
+            activity=discord.Streaming(
+                name=f"{VERSION} | /invite", url="https://twitch.tv/romi330"
+            )
+        )
+        await asyncio.sleep(30)
+        await client.change_presence(
+            activity=discord.Streaming(
+                name=f"{VERSION} | /invite", url="https://twitch.tv/romi330"
+            )
+        )
+        await asyncio.sleep(30)
 
 @client.event
 async def on_message(message):
