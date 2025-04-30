@@ -3,13 +3,14 @@ import os
 import traceback
 import platform
 import datetime
+import aiohttp
 from dotenv import load_dotenv
 import discord
 from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 
-VERSION = "v8.3"
+VERSION = "v8.4"
 intents = discord.Intents.default()
 intents.message_content = (
     True
@@ -22,6 +23,7 @@ client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)
 
 load_dotenv()
 LOG_CHANNEL = os.getenv("LOG_CHANNEL")
+TOP_GG_API_TOKEN = os.getenv("TOP_GG_API_TOKEN")
 
 try:
     LOG_CHANNEL = int(LOG_CHANNEL) if LOG_CHANNEL else None
@@ -31,6 +33,23 @@ except ValueError:
 
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
+async def post_server_count():
+    url = f"https://top.gg/api/bots/{client.user.id}/stats"
+    headers = {
+        "Authorization": TOP_GG_API_TOKEN,
+        "Content-Type": "application/json",
+    }
+    payload = {
+        "server_count": len(client.guilds),
+    }
+
+    async with aiohttp.ClientSession() as session:
+        async with session.post(url, headers=headers, json=payload) as response:
+            if response.status == 200:
+                print("Successfully posted server count to Top.gg!")
+            else:
+                print(f"Failed to post server count to Top.gg. Status: {response.status}")
+                print(await response.text())
 
 @client.event
 async def on_ready():
@@ -38,6 +57,7 @@ async def on_ready():
         client.start_time = datetime.datetime.now(
             datetime.timezone.utc
         )
+        client.loop.create_task(post_server_count_periodically())
         print("Current working directory:", os.getcwd())
         synced = await client.tree.sync()
         print(f"Synced {len(synced)} application command(s)")
@@ -114,6 +134,11 @@ async def on_ready():
             )
         )
         await asyncio.sleep(30)
+
+async def post_server_count_periodically():
+    while True:
+        await post_server_count()
+        await asyncio.sleep(1800)
 
 @client.event
 async def on_message(message):
