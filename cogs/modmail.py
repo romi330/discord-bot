@@ -84,23 +84,97 @@ class ModmailModal(ui.Modal):
             )
 
 
+class ChannelSelect(discord.ui.Select):
+    def __init__(self, bot: commands.Bot, guild: discord.Guild, page: int):
+        self.bot = bot
+        self.guild = guild
+        self.page = page
+        self.channels_per_page = 25
+
+        start = page * self.channels_per_page
+        end = start + self.channels_per_page
+        channels = guild.text_channels[start:end]
+
+        options = [
+            discord.SelectOption(label=channel.name, value=str(channel.id))
+            for channel in channels
+        ]
+
+        if not options:
+            options = [discord.SelectOption(label="No channels available", value="none")]
+
+        super().__init__(placeholder="Select a channel...", options=options)
+
+    async def callback(self, interaction: discord.Interaction):
+        if self.values[0] == "none":
+            await interaction.response.send_message(
+                "No channels available to select.", ephemeral=True
+            )
+            return
+
+        channel_id = int(self.values[0])
+        config = load_config()
+        config[str(interaction.guild.id)] = channel_id
+        save_config(config)
+
+        channel = self.guild.get_channel(channel_id)
+        await interaction.response.send_message(
+            f"Modmail log channel has been set to {channel.mention}.", ephemeral=True
+        )
+
+
+class ChannelSelectView(discord.ui.View):
+    def __init__(self, bot: commands.Bot, guild: discord.Guild):
+        super().__init__(timeout=60)
+        self.bot = bot
+        self.guild = guild
+        self.page = 0
+        self.update_view()
+
+    def update_view(self):
+        self.clear_items()
+        self.add_item(ChannelSelect(self.bot, self.guild, self.page))
+
+        if len(self.guild.text_channels) > 25:
+            if self.page > 0:
+                self.add_item(self.PreviousPageButton(self))
+            if (self.page + 1) * 25 < len(self.guild.text_channels):
+                self.add_item(self.NextPageButton(self))
+
+    class PreviousPageButton(discord.ui.Button):
+        def __init__(self, parent_view):
+            super().__init__(label="Previous", style=discord.ButtonStyle.blurple)
+            self.parent_view = parent_view
+
+        async def callback(self, interaction: discord.Interaction):
+            self.parent_view.page -= 1
+            self.parent_view.update_view()
+            await interaction.response.edit_message(view=self.parent_view)
+
+    class NextPageButton(discord.ui.Button):
+        def __init__(self, parent_view):
+            super().__init__(label="Next", style=discord.ButtonStyle.blurple)
+            self.parent_view = parent_view
+
+        async def callback(self, interaction: discord.Interaction):
+            self.parent_view.page += 1
+            self.parent_view.update_view()
+            await interaction.response.edit_message(view=self.parent_view)
+
+
 class Modmail(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @app_commands.command(
-        name="setmodmail", description="Set the modmail log channel (manage_channels)"
+        name="setmodmail", description="Set the modmail log channel"
     )
     @app_commands.default_permissions(manage_channels=True)
     @app_commands.checks.has_permissions(manage_channels=True)
-    async def setmodmail(
-        self, interaction: discord.Interaction, channel: discord.TextChannel
-    ):
-        config = load_config()
-        config[str(interaction.guild.id)] = channel.id
-        save_config(config)
+    async def setmodmail(self, interaction: discord.Interaction):
+        view = ChannelSelectView(self.bot, interaction.guild)
         await interaction.response.send_message(
-            f"Modmail log channel set to {channel.mention}", ephemeral=True
+            "Select a channel for modmail using the dropdown below.", view=view, ephemeral=True
         )
 
     @app_commands.command(name="modmail", description="Send a modmail message")
