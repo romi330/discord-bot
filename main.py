@@ -9,7 +9,7 @@ from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 
-VERSION = "v7.5"
+VERSION = "v7.6"
 intents = discord.Intents.default()
 intents.message_content = (
     True

@@ -28,15 +28,18 @@ class AutoRole(commands.Cog):
         guild_id = str(member.guild.id)
         if guild_id in self.config and self.config[guild_id].get("enabled", False):
             role_id = self.config[guild_id].get("role_id")
-            if role_id:
+            if not role_id:
+                return
+            try:
                 role = member.guild.get_role(int(role_id))
                 if role:
-                    try:
-                        await member.add_roles(role)
-                    except discord.Forbidden:
-                        pass
-                    except discord.HTTPException:
-                        pass
+                    await member.add_roles(role)
+            except (ValueError, TypeError):
+                return
+            except discord.Forbidden:
+                return
+            except discord.HTTPException:
+                return
 
     @app_commands.command(
         name="autorole", description="Configure auto-role settings for this server."
@@ -105,7 +108,7 @@ class AutoRole(commands.Cog):
                         options = [
                             discord.SelectOption(label=role.name, value=str(role.id))
                             for role in interaction.guild.roles
-                            if not role.is_bot_managed()
+                            if not role.is_bot_managed() and role < interaction.guild.me.top_role
                         ]
                         super().__init__(
                             placeholder="Select a role...", options=options
