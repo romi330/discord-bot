@@ -9,11 +9,15 @@ from discord import app_commands
 from discord.ext import commands
 from discord.app_commands import CommandOnCooldown
 
-VERSION = "v7.2"
+VERSION = "v7.5"
 intents = discord.Intents.default()
 intents.message_content = (
     True
 )
+intents.members = (
+    True
+)
+
 client = commands.Bot(command_prefix="x!", intents=intents, help_command=None)
 
 load_dotenv()
@@ -261,5 +265,6 @@ if __name__ == "__main__":
     asyncio.run(client.load_extension("cogs.help"))
     asyncio.run(client.load_extension("cogs.vote"))
     asyncio.run(client.load_extension("cogs.clash"))
+    asyncio.run(client.load_extension("cogs.autorole"))
     load_dotenv()
     client.run(os.getenv("TOKEN"))

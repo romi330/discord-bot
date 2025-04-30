@@ -122,6 +122,7 @@ class HelpView(discord.ui.View):
         )
         embed.add_field(name="`/lock`", value="Lock a channel", inline=False)
         embed.add_field(name="`/unlock`", value="Unlock a channel", inline=False)
+        embed.add_field(name="`/autorole`", value="Set up auto-role for new members", inline=False)
         embed.set_footer(text="Use / before each command • Page 3/5")
         embed.set_thumbnail(
             url="https://cdn.discordapp.com/avatars/1249144690461118627/9a3afbbef2a17cd9b637e951a5277393.png"
