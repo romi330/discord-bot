@@ -40,6 +40,7 @@ class Moderation(commands.Cog):
 
     @app_commands.command(description="Kick a user. (kick_members)")
     @app_commands.default_permissions(kick_members=True)
+    @app_commands.checks.has_permissions(kick_members=True)
     @bot_has_permissions(kick_members=True)
     @guild_only()
     async def kick(self, interaction: discord.Interaction, member: discord.Member):
@@ -63,6 +64,7 @@ class Moderation(commands.Cog):
 
     @app_commands.command(description="Ban a user. (ban_members)")
     @app_commands.default_permissions(ban_members=True)
+    @app_commands.checks.has_permissions(ban_members=True)
     @bot_has_permissions(ban_members=True)
     @guild_only()
     async def ban(self, interaction: discord.Interaction, member: discord.Member):
@@ -88,6 +90,7 @@ class Moderation(commands.Cog):
         description="Purge messages from a channel. (manage_messages)"
     )
     @app_commands.default_permissions(manage_messages=True)
+    @app_commands.checks.has_permissions(manage_messages=True)
     @bot_has_permissions(manage_messages=True)
     @guild_only()
     async def purge(self, interaction: discord.Interaction, amount: int):
@@ -113,6 +116,7 @@ class Moderation(commands.Cog):
 
     @app_commands.command(description="Times out a user. (moderate_members)")
     @app_commands.default_permissions(moderate_members=True)
+    @app_commands.checks.has_permissions(moderate_members=True)
     @bot_has_permissions(moderate_members=True)
     @guild_only()
     async def timeout(
@@ -159,6 +163,7 @@ class Moderation(commands.Cog):
         description="Announces a message in a channel. (manage_channels)"
     )
     @app_commands.default_permissions(manage_channels=True)
+    @app_commands.checks.has_permissions(manage_channels=True)
     @bot_has_permissions(manage_channels=True)
     @guild_only()
     async def announce(
@@ -207,6 +212,7 @@ class Moderation(commands.Cog):
 
     @app_commands.command(description="Locks a channel. (manage_roles)")
     @app_commands.default_permissions(manage_roles=True)
+    @app_commands.checks.has_permissions(manage_roles=True)
     @bot_has_permissions(manage_roles=True)
     @guild_only()
     async def lock(
@@ -235,6 +241,7 @@ class Moderation(commands.Cog):
 
     @app_commands.command(description="Unlocks a channel. (manage_roles)")
     @app_commands.default_permissions(manage_roles=True)
+    @app_commands.checks.has_permissions(manage_roles=True)
     @bot_has_permissions(manage_roles=True)
     @guild_only()
     async def unlock(

@@ -92,6 +92,7 @@ class Modmail(commands.Cog):
         name="setmodmail", description="Set the modmail log channel (manage_channels)"
     )
     @app_commands.default_permissions(manage_channels=True)
+    @app_commands.checks.has_permissions(manage_channels=True)
     async def setmodmail(
         self, interaction: discord.Interaction, channel: discord.TextChannel
     ):

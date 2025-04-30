@@ -101,6 +101,7 @@ class AutoMod(commands.Cog):
         description="Manage AutoMod settings (blocked words, links, etc.).",
     )
     @app_commands.default_permissions(manage_messages=True)
+    @app_commands.checks.has_permissions(manage_messages=True)
     async def automod_settings(self, interaction: discord.Interaction):
         if interaction.guild is None:
             await interaction.response.send_message(

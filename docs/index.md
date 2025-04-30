@@ -1,4 +1,4 @@
-# Paul - The Powerful Yet Simple Discord Bot
+# Paul - The Ultimate Discord Bot for Moderation, Fun, and Utility
 [![Invite Paul](https://img.shields.io/badge/Invite-Paul%20Bot-blue?style=flat&logo=discord)](https://discord.com/oauth2/authorize?client_id=1249144690461118627)
 [![GitHub Repository](https://img.shields.io/github/stars/your-repo?style=social)](https://github.com/ronenlazowski/paul)
 
@@ -6,67 +6,110 @@
 
 ## 🤖 About Paul
 
-**Paul** is a powerful yet easy-to-use verified Discord bot designed with simplicity at its core. From the moment you invite Paul to your server, it seamlessly integrates and begins functioning without any complicated setup—**no hassle, no confusion.**
+**Paul** is a feature-rich, verified Discord bot designed to simplify server management, enhance community engagement, and provide powerful tools for moderation, fun, and utility. With a focus on ease of use and reliability, Paul integrates seamlessly into your server, offering a wide range of features that cater to both casual and professional communities.
 
-Whether you're looking for:
-
-- 🚨 **Advanced AutoMod Features**
-
-- 🏆 **Clash of Clans Integration**
-
-- 🛠️ **Reliable Moderation Assistant**
-
-**Paul handles everything effortlessly.**
+Whether you're managing a gaming server, a professional workspace, or a casual hangout, Paul is here to help.
 
 ---
 
 ## ⚙️ Features
 
-✅ **Seamless Automod:** Uses Discord’s built-in automod API for efficient moderation.  
-✅ **JSON-Based Customization:** Easily fine-tune automoderation settings per server.  
-✅ **Clash of Clans Support:** Fetch stats, manage clans, and more!  
-✅ **Instant Setup:** No complex configuration—just invite and go!  
-✅ **Verified & Secure:** Built with best practices to ensure safety and reliability.
+### 🔒 **Advanced Moderation Tools**
+- **Auto-Role System**: Automatically assign roles to new members upon joining.
+- **Timeouts and Bans**: Temporarily or permanently remove disruptive users.
+- **Message Purging**: Quickly delete up to 500 messages in a channel.
+- **Custom Automod Rules**: Block specific words, links, or spam with ease.
+- **Dynamic Moderation Buttons**: Configure moderation settings directly in Discord using an intuitive button-based interface.
+
+### 🎮 **Clash of Clans Integration**
+- Fetch detailed stats for players and clans.
+- View war logs and clan performance.
+- Manage your Clash of Clans community directly from Discord.
+
+### 🛠️ **Utility Commands**
+- **Ping**: Check the bot's latency.
+- **User Info**: Fetch detailed information about a user.
+- **Server Info**: Get insights into your server's settings and statistics.
+- **Avatar**: Retrieve high-resolution profile pictures of users.
+
+### 🎭 **Fun Features**
+- **Random Memes**: Fetch memes from popular subreddits.
+- **Customizable Greetings**: Welcome new members with personalized messages.
+- **Trivia and Games**: Engage your community with fun games and trivia.
+
+### 📜 **Documentation and Support**
+- Comprehensive documentation available at [lazowski.me](https://lazowski.me).
+- Dedicated support via our [Discord server](https://discord.com/invite/8hYZUtUxme).
 
 ---
 
 ## 🚀 Getting Started
 
 ### **1️⃣ Invite Paul to Your Server**
-Click the button below to get started:
+Click the button below to invite Paul to your server:
 
 [![Invite Paul](https://img.shields.io/badge/Invite-Paul%20Bot-blue?style=flat&logo=discord)](https://discord.com/oauth2/authorize?client_id=1249144690461118627)
 
-### **2️⃣ Configure Automod (Optional)**
-Paul works out of the box, but you can customize Automoderation settings using a dynamic button system, allowing users to fine-tune their preferences. With this feature, administrators can easily create custom rules for actions like deleting specific words, spam, or even flood based on specific keywords, user behavior, or other triggers. The dynamic button system provides a user-friendly interface, where each button corresponds to a different action or setting that can be enabled or adjusted in real-time. Whether you're dealing with spam, inappropriate language, or disruptive behavior, this customization ensures your moderation system is tailored to your community's unique needs.
+### **2️⃣ Configure Auto-Role**
+Paul's Auto-Role system allows you to automatically assign roles to new members. To configure:
+1. Use the `/autorole` command.
+2. Select a role from the dropdown menu or configure settings using the intuitive button-based interface.
+3. Save your settings, and you're good to go!
 
-### **3️⃣ Enjoy!**
-Let Paul take care of moderation and integrations while you focus on your community.
+### **3️⃣ Set Up Modmail**
+Paul includes a built-in Modmail system for seamless communication between moderators and members:
+1. Use the `/modmail` command to open the Modmail interface.
+2. Set the Modmail log channel using the "Set Modmail Channel" button.
+3. Members can send messages directly to moderators using the "Send Modmail" button.
+
+### **4️⃣ Explore Commands**
+Paul comes with a wide range of commands for moderation, utility, and fun. Use `/help` in Discord to view the full list of commands.
 
 ---
 
 ## 📜 Commands Overview
 
 ### 🛠️ **Moderation**
-```
-/ban @user - Ban a user from the server
-/kick @user - Kick a user from the server
-/timeout @user - Mute a user temporarily
-/purge # - Delete messages, up to 500
-```
+| Command         | Description                                      |
+|------------------|--------------------------------------------------|
+| `/ban @user`    | Ban a user from the server.                      |
+| `/kick @user`   | Kick a user from the server.                     |
+| `/timeout @user`| Temporarily mute a user.                         |
+| `/purge <number>`| Delete a specified number of messages (up to 500).|
 
 ### 🎮 **Clash of Clans**
-```
-/clash - Get details about a Clash of Clans clan, player, and war log.
-```
+| Command         | Description                                      |
+|------------------|--------------------------------------------------|
+| `/clash clan`   | Fetch details about a Clash of Clans clan.       |
+| `/clash player` | Get stats for a specific Clash of Clans player.  |
+| `/clash warlog` | View the war log of a Clash of Clans clan.       |
 
 ### 🎭 **Fun & Utility**
-```
-/pfp @user - Get a high-resolution avatar of a user
-/ping - Check the bot's latency
-```
+| Command         | Description                                      |
+|------------------|--------------------------------------------------|
+| `/pfp @user`    | Get a high-resolution avatar of a user.          |
+| `/ping`         | Check the bot's latency.                         |
 
-*(More commands available in app—use `/help` in Discord!)*
+---
+
+## 🔧 Advanced Configuration
+
+### **Auto-Role System**
+Paul's Auto-Role system is fully customizable:
+- Use `/autorole` to toggle the system on or off.
+- Assign specific roles to new members.
+- Configure advanced settings like role hierarchy and exclusions.
+
+### **Custom Automod Rules**
+Paul's Automod system allows you to:
+- Block specific words or phrases.
+- Prevent spam and repeated messages.
+- Automatically delete messages containing links or inappropriate content.
+
+### **Modmail**
+Paul's Modmail system provides a direct line of communication between members and moderators:
+- Members can submit issues or concerns using a simple modal interface.
+- Moderators receive messages in a designated log channel.
 
 ---
 

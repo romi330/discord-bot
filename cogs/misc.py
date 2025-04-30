@@ -22,22 +22,22 @@ class Misc(commands.Cog):
         msg = discord.Embed(
             title="Changelog and Information", color=discord.Colour.blurple()
         )
-        msg.add_field(name=f"Version {VERSION} | Seventh Release", value="", inline=False)
+        msg.add_field(name=f"Version {VERSION} | Eighth Release", value="", inline=False)
         msg.add_field(
             name="What's changed?",
             value=(
-                "**•** Enhanced the AutoMod system for better moderation capabilities.\n"
-                "**•** Improved the `/help` command with a new interactive UI.\n"
-                "**•** Added new moderation commands like `/timeout` and `/announce`.\n"
-                "**•** Optimized bot performance for large-scale servers.\n"
+                "**•** Improved the Auto-Role system with pagination for large servers.\n"
+                "**•** Enhanced `/help` with better interactivity and usability.\n"
+                "**•** Optimized performance for handling large-scale servers.\n"
+                "**•** Added support for advanced role management features.\n"
             ),
             inline=True,
         )
         msg.add_field(
             name="What's fixed?",
             value=(
-                "**•** Resolved critical bugs affecting bot stability.\n"
-                "**•** Fixed issues with command cooldowns and permissions.\n"
+                "**•** Resolved issues with role assignment on member join.\n"
+                "**•** Fixed bugs in the `/autorole` command UI.\n"
                 "**•** Improved error handling for better user feedback.\n"
                 "**•** Addressed API rate-limiting issues for smoother operation.\n"
             ),
@@ -46,10 +46,10 @@ class Misc(commands.Cog):
         msg.add_field(
             name="What's new?",
             value=(
-                "**•** Introduced Clash of Clans integration with `/clash` command.\n"
-                "**•** Added interactive buttons for Player Info, Clan Info, and War Logs.\n"
-                "**•** New Cancel button to stop ongoing commands.\n"
+                "**•** Introduced `/autorole` pagination for servers with 25+ roles.\n"
+                "**•** Added `/ping` to check bot latency.\n"
                 "**•** Improved `/source` command to showcase the bot's open-source repository.\n"
+                "**•** Enhanced moderation commands like `/timeout` and `/ban`.\n"
             ),
             inline=False,
         )
