@@ -11,7 +11,4 @@ nav:
   - Terms of Service: TERMS.md
   - Required Intents: INTENTS.md
 
-extra_files:
-  - CNAME
-
 custom_dir: docs_extra
