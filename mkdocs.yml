@@ -13,3 +13,5 @@ nav:
 
 extra_files:
   - CNAME
+
+custom_dir: docs_extra
