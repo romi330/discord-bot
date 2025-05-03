@@ -1,4 +1,6 @@
 site_name: Paul Documentation and Information
+site_description: Documentation and information about Paul, a privacy-focused AI assistant.
+site_author: Ronen Lazowski
 site_url: https://lazowski.me
 use_directory_urls: true
 
@@ -11,4 +13,7 @@ nav:
   - Terms of Service: TERMS.md
   - Required Intents: INTENTS.md
 
-custom_dir: docs_extra
+extra_files:
+  - CNAME
+
+repo_url: https://github.com/ronenlazowski/paul

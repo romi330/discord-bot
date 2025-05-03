@@ -15,6 +15,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Cache pip dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-python-${{ hashFiles('**/mkdocs.yml') }}
+          restore-keys: |
+            ${{ runner.os }}-python-
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -24,13 +32,8 @@ jobs:
         run: |
           pip install mkdocs mkdocs-material
 
+      - name: Create CNAME file
+        run: echo "lazowski.me" > CNAME
+
       - name: Deploy to GitHub Pages
         run: mkdocs gh-deploy --force
-
-      - name: Cache pip dependencies
-        uses: actions/cache@v3
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-python-${{ hashFiles('**/mkdocs.yml') }}
-          restore-keys: |
-            ${{ runner.os }}-python-
