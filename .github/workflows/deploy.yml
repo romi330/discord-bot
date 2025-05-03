@@ -32,10 +32,5 @@ jobs:
         run: |
           pip install mkdocs mkdocs-material
 
-      - name: Create CNAME file
-        run: echo "lazowski.me" > CNAME
-
       - name: Deploy to GitHub Pages
-        run: |
-          mkdocs gh-deploy --force
-          cp CNAME site/
+        run: mkdocs gh-deploy --force --cname lazowski.me
