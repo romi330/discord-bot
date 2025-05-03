@@ -363,22 +363,7 @@ class DeveloperDashboardView(View):
                 )
                 if main_channel:
                     try:
-                        embed = discord.Embed(
-                            title="📢 Broadcast Message",
-                            color=discord.Color.red(),
-                        )
-                        embed.add_field(
-                            name=message,
-                            value="",
-                            inline=False,
-                        )
-                        embed.set_footer(
-                            text="This is a global broadcast message. It has been sent to every server."
-                        )
-                        await interaction.followup.send(
-                            "Here is your broadcast message:", embed=embed, ephemeral=True
-                        )
-                        await main_channel.send("📢 **Broadcast Message:**", embed=embed)
+                        await main_channel.send(message)
                     except discord.Forbidden:
                         continue
 
@@ -463,21 +448,7 @@ class DeveloperDashboardView(View):
             response_message = done.pop().result()
             message = response_message.content
 
-            embed = discord.Embed(
-                title="📢 Test Broadcast Message",
-                color=discord.Color.orange(),
-            )
-            embed.add_field(
-                name=message,
-                value="",
-                inline=False,
-            )
-            embed.set_footer(
-                text="This is a test broadcast message. It will not be sent to other servers."
-            )
-            await interaction.followup.send(
-                "Here is your test broadcast message:", embed=embed, ephemeral=True
-            )
+            await interaction.followup.send(message)
 
         except asyncio.TimeoutError:
             await interaction.followup.send(
