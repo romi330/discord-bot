@@ -36,4 +36,6 @@ jobs:
         run: echo "lazowski.me" > CNAME
 
       - name: Deploy to GitHub Pages
-        run: mkdocs gh-deploy --force
+        run: |
+          mkdocs gh-deploy --force
+          cp CNAME site/
