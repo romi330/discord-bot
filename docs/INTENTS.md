@@ -38,9 +38,9 @@ The bot requires access to the `guild_members` intent to enable features that re
 - **Member Tracking**:
   - Detect when members join or leave the server.
 - **Moderation Tools**:
-  - Enable commands like `/ban`, and `/kick` that depend on member information.
+  - Enable commands like `/timeout`, `/ban`, and `/kick` that depend on member information.
 - **User Information**:
-  - Fetch member details for commands like `/modmail`.
+  - Fetch member details for commands like `/modmail` and `/userinfo`.
 
 ### Privacy Commitment
 

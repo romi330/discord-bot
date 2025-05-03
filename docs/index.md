@@ -88,6 +88,8 @@ Paul comes with a wide range of commands for moderation, utility, and fun. Use `
 | `/dadjoke`      | Fetch a random dad joke.                         |
 | `/affirmation`  | Get a positive affirmation to brighten your day. |
 | `/clash`        | Open the Clash of Clans features menu.           |
+| `/userinfo`     | Get very thorough information about a user.      |
+| `/serverinfo`   | Get very thorough information about a server.    |
 
 ### 🤖 **Automation**
 | Command         | Description                                      |

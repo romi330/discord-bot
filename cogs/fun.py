@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 import re
 import discord
 import requests
@@ -57,6 +58,55 @@ class Fun(commands.Cog):
         await interaction.response.send_message(
             embed=discord.Embed(description=affirmation, color=discord.Colour.blurple())
         )
+
+    @app_commands.command(description="Get detailed information about a user.")
+    @app_commands.checks.cooldown(1, 5)
+    async def userinfo(self, interaction: discord.Interaction, member: discord.Member = None):
+        if member is None:
+            member = interaction.user
+
+        roles = [role.mention for role in member.roles if role != interaction.guild.default_role]
+        embed = discord.Embed(
+            title=f"User Info - {member}",
+            color=member.color,
+            timestamp=datetime.now(datetime.timezone.utc)
+        )
+        embed.set_thumbnail(url=member.avatar)
+        embed.add_field(name="ID", value=member.id, inline=True)
+        embed.add_field(name="Display Name", value=member.display_name, inline=True)
+        embed.add_field(name="Account Created", value=member.created_at.strftime("%Y-%m-%d %H:%M:%S"), inline=False)
+        embed.add_field(name="Joined Server", value=member.joined_at.strftime("%Y-%m-%d %H:%M:%S"), inline=False)
+        embed.add_field(name="Roles", value=", ".join(roles) if roles else "No roles", inline=False)
+        embed.add_field(name="Top Role", value=member.top_role.mention, inline=True)
+        embed.add_field(name="Bot?", value="Yes" if member.bot else "No", inline=True)
+        embed.set_footer(text=f"Requested by {interaction.user}", icon_url=interaction.user.avatar)
+
+        await interaction.response.send_message(embed=embed)
+
+    @app_commands.command(description="Get detailed information about the server.")
+    @app_commands.checks.cooldown(1, 5)
+    async def serverinfo(self, interaction: discord.Interaction):
+        guild = interaction.guild
+        embed = discord.Embed(
+            title=f"Server Info - {guild.name}",
+            color=discord.Colour.blurple(),
+            timestamp=datetime.now(datetime.timezone.utc)
+        )
+        embed.set_thumbnail(url=guild.icon)
+        embed.add_field(name="ID", value=guild.id, inline=True)
+        embed.add_field(name="Owner", value=guild.owner.mention, inline=True)
+        embed.add_field(name="Created On", value=guild.created_at.strftime("%Y-%m-%d %H:%M:%S"), inline=False)
+        embed.add_field(name="Member Count", value=guild.member_count, inline=True)
+        embed.add_field(name="Text Channels", value=len(guild.text_channels), inline=True)
+        embed.add_field(name="Voice Channels", value=len(guild.voice_channels), inline=True)
+        embed.add_field(name="Roles", value=len(guild.roles), inline=True)
+        embed.add_field(name="Boost Level", value=guild.premium_tier, inline=True)
+        embed.add_field(name="Boosts", value=guild.premium_subscription_count, inline=True)
+        embed.add_field(name="Verification Level", value=str(guild.verification_level).capitalize(), inline=True)
+        embed.add_field(name="Features", value=", ".join(guild.features) if guild.features else "None", inline=False)
+        embed.set_footer(text=f"Requested by {interaction.user}", icon_url=interaction.user.avatar)
+
+        await interaction.response.send_message(embed=embed)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Fun(bot))
