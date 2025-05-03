@@ -1,5 +1,5 @@
 import json
-from datetime import datetime
+import datetime
 import re
 import discord
 import requests
@@ -69,7 +69,7 @@ class Fun(commands.Cog):
         embed = discord.Embed(
             title=f"User Info - {member}",
             color=member.color,
-            timestamp=datetime.now(datetime.timezone.utc)
+            timestamp=datetime.datetime.now(datetime.timezone.utc)
         )
         embed.set_thumbnail(url=member.avatar)
         embed.add_field(name="ID", value=member.id, inline=True)
@@ -90,7 +90,7 @@ class Fun(commands.Cog):
         embed = discord.Embed(
             title=f"Server Info - {guild.name}",
             color=discord.Colour.blurple(),
-            timestamp=datetime.now(datetime.timezone.utc)
+            timestamp=datetime.datetime.now(datetime.timezone.utc)
         )
         embed.set_thumbnail(url=guild.icon)
         embed.add_field(name="ID", value=guild.id, inline=True)
