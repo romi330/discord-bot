@@ -33,6 +33,13 @@ jobs:
           pip install mkdocs mkdocs-material
 
       - name: Deploy to GitHub Pages
+        run: mkdocs gh-deploy --force
+
+      - name: Add CNAME file to gh-pages branch
         run: |
+          git fetch origin gh-pages
+          git checkout gh-pages
           echo "lazowski.me" > CNAME
-          mkdocs gh-deploy --force
+          git add CNAME
+          git commit -m "Add CNAME file for custom domain"
+          git push origin gh-pages
