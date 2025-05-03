@@ -33,14 +33,14 @@ The bot requires access to the `guild_members` intent to enable features that re
 
 ### Features Enabled by `guild_members`
 
-- **Auto-Role System**:
+- **Autorole System**:
   - Automatically assign roles to new members upon joining.
 - **Member Tracking**:
   - Detect when members join or leave the server.
 - **Moderation Tools**:
-  - Enable commands like `/timeout`, `/ban`, and `/kick` that depend on member information.
+  - Enable commands like `/ban`, and `/kick` that depend on member information.
 - **User Information**:
-  - Fetch member details for commands like `/userinfo` or `/modmail`.
+  - Fetch member details for commands like `/modmail`.
 
 ### Privacy Commitment
 
