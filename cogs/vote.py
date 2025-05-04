@@ -15,6 +15,8 @@ class Vote(commands.Cog):
     @app_commands.command(description="Vote for the bot or check your vote status.")
     @app_commands.checks.cooldown(1, 30)
     async def vote(self, interaction: discord.Interaction):
+        await interaction.response.defer(ephemeral=True)
+
         user_id = interaction.user.id
         bot_id = self.bot.user.id
         vote_url = f"https://top.gg/bot/{bot_id}/vote"
@@ -52,7 +54,7 @@ class Vote(commands.Cog):
                     )
                     embed.set_footer(text=f"Error Code: {response.status}")
 
-                await interaction.response.send_message(embed=embed, ephemeral=True)
+                await interaction.followup.send(embed=embed, ephemeral=True)
 
 
 async def setup(bot):
