@@ -117,6 +117,8 @@ class Fun(commands.Cog):
         winners="Number of winners (default: 1)"
     )
     @app_commands.checks.cooldown(1, 60)
+    @app_commands.default_permissions(manage_channels=True)
+    @app_commands.checks.has_permissions(manage_channels=True)
     async def giveaway(
         self, 
         interaction: discord.Interaction, 
