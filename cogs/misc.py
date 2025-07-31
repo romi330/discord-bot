@@ -22,34 +22,35 @@ class Misc(commands.Cog):
         msg = discord.Embed(
             title="Changelog and Information", color=discord.Colour.blurple()
         )
-        msg.add_field(name=f"Version {VERSION} | Eighth Release", value="", inline=False)
+        msg.add_field(name=f"Version {VERSION} | Ninth Release", value="", inline=False)
         msg.add_field(
             name="What's changed?",
             value=(
-                "**•** Improved the Auto-Role system with pagination for large servers.\n"
-                "**•** Enhanced `/help` with better interactivity and usability.\n"
-                "**•** Optimized performance for handling large-scale servers.\n"
-                "**•** Added support for advanced role management features.\n"
+                "**•** Enhanced vote command with proper interaction handling.\n"
+                "**•** Improved error handling for Discord API interactions.\n"
+                "**•** Optimized response deferrals to prevent timeouts.\n"
+                "**•** Updated command reliability and user experience.\n"
             ),
             inline=True,
         )
         msg.add_field(
             name="What's fixed?",
             value=(
-                "**•** Resolved issues with role assignment on member join.\n"
-                "**•** Fixed bugs in the `/autorole` command UI.\n"
-                "**•** Improved error handling for better user feedback.\n"
-                "**•** Addressed API rate-limiting issues for smoother operation.\n"
+                "**•** Fixed 'Unknown interaction' errors in vote command.\n"
+                "**•** Resolved interaction timeout issues.\n"
+                "**•** Improved API response handling.\n"
+                "**•** Enhanced error messages for better debugging.\n"
             ),
             inline=True,
         )
         msg.add_field(
             name="What's new?",
             value=(
-                "**•** Introduced `/autorole` pagination for servers with 25+ roles.\n"
-                "**•** Added `/ping` to check bot latency.\n"
-                "**•** Improved `/source` command to showcase the bot's open-source repository.\n"
-                "**•** Enhanced moderation commands like `/timeout` and `/ban`.\n"
+                "**•** Added `/giveaway` command with reaction-based participation.\n"
+                "**•** Support for multiple winners in giveaways.\n"
+                "**•** Automatic winner selection with random picking.\n"
+                "**•** Enhanced user info and server info commands.\n"
+                "**•** Improved embed formatting across all commands.\n"
             ),
             inline=False,
         )

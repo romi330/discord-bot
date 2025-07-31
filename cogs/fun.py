@@ -1,6 +1,8 @@
 import json
 import datetime
 import re
+import random
+import asyncio
 import discord
 import requests
 from bs4 import BeautifulSoup as bs
@@ -107,6 +109,99 @@ class Fun(commands.Cog):
         embed.set_footer(text=f"Requested by {interaction.user}", icon_url=interaction.user.avatar)
 
         await interaction.response.send_message(embed=embed)
+
+    @app_commands.command(description="Start a giveaway")
+    @app_commands.describe(
+        prize="What is being given away",
+        duration="Duration in minutes (default: 60)",
+        winners="Number of winners (default: 1)"
+    )
+    @app_commands.checks.cooldown(1, 60)
+    async def giveaway(
+        self, 
+        interaction: discord.Interaction, 
+        prize: str, 
+        duration: int = 60, 
+        winners: int = 1
+    ):
+
+        if duration < 1 or duration > 10080:  # Max 1 week
+            await interaction.response.send_message(
+                "⚠️ Duration must be between 1 and 10080 minutes (1 week).", 
+                ephemeral=True
+            )
+            return
+        
+        if winners < 1 or winners > 20:
+            await interaction.response.send_message(
+                "⚠️ Number of winners must be between 1 and 20.", 
+                ephemeral=True
+            )
+            return
+
+        end_time = datetime.datetime.now(datetime.timezone.utc) + datetime.timedelta(minutes=duration)
+        
+        embed = discord.Embed(
+            title="🎉 GIVEAWAY 🎉",
+            description=f"**Prize:** {prize}\n"
+                       f"**Winners:** {winners}\n"
+                       f"**Ends:** <t:{int(end_time.timestamp())}:R>\n"
+                       f"**Hosted by:** {interaction.user.mention}\n\n"
+                       f"React with 🎉 to enter!",
+            color=discord.Color.gold(),
+            timestamp=end_time
+        )
+        embed.set_footer(text=f"Ends at • {winners} winner(s)")
+
+        await interaction.response.send_message(embed=embed)
+        message = await interaction.original_response()
+        
+        await message.add_reaction("🎉")
+        
+        await asyncio.sleep(duration * 60)
+        
+        try:
+            message = await message.fetch()
+        except discord.NotFound:
+            return
+        
+        participants = []
+        for reaction in message.reactions:
+            if str(reaction.emoji) == "🎉":
+                async for user in reaction.users():
+                    if not user.bot and user != self.bot.user:
+                        participants.append(user)
+                break
+        
+        if not participants:
+            embed = discord.Embed(
+                title="🎉 Giveaway Ended",
+                description=f"**Prize:** {prize}\n"
+                           f"**Winners:** No valid participants",
+                color=discord.Color.red()
+            )
+        else:
+            actual_winners = min(winners, len(participants))
+            selected_winners = random.sample(participants, actual_winners)
+            
+            winners_mention = ", ".join([winner.mention for winner in selected_winners])
+            
+            embed = discord.Embed(
+                title="🎉 Giveaway Ended",
+                description=f"**Prize:** {prize}\n"
+                           f"**Winner(s):** {winners_mention}\n"
+                           f"**Total Participants:** {len(participants)}",
+                color=discord.Color.green()
+            )
+            
+            congrats_embed = discord.Embed(
+                title="🎊 Congratulations!",
+                description=f"{winners_mention}, you won **{prize}**!",
+                color=discord.Color.gold()
+            )
+            await message.reply(embed=congrats_embed)
+        
+        await message.edit(embed=embed)
 
 async def setup(bot: commands.Bot):
     await bot.add_cog(Fun(bot))

@@ -92,6 +92,16 @@ class HelpView(discord.ui.View):
         embed.add_field(
             name="`/feedback`", value="Give feedback to the developer", inline=False
         )
+        embed.add_field(
+            name="`/giveaway`", value="Create a giveaway in your server", inline=False
+        )
+        embed.add_field(
+            name="`/userinfo`", value="Get detailed information about a user", inline=False
+        )
+        embed.add_field(
+            name="`/serverinfo`", value="Get information about the server", inline=False
+        )
+        
         embed.set_footer(text="Use / before each command • Page 2/5")
         embed.set_thumbnail(
             url="https://cdn.discordapp.com/avatars/1249144690461118627/9a3afbbef2a17cd9b637e951a5277393.png"
