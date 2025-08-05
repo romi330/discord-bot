@@ -10,7 +10,8 @@ from discord import app_commands
 from discord.ext import commands, tasks
 from discord.app_commands import CommandOnCooldown
 
-VERSION = "v9.1 - ronenlaz.com"
+VERSION = "v9.1"
+STATUS = "ronenlaz.com"
 intents = discord.Intents.default()
 intents.message_content = True
 intents.members = True
@@ -77,10 +78,9 @@ async def on_ready():
         else:
             print("Log channel not found or invalid LOG_CHANNEL value. Skipping log message.")
 
-        update_presence_task.start()
-        print("Presence update task started.")
-    except RuntimeError:
-        print("Presence update task is already running.")
+        # Set static presence with custom status
+        await client.change_presence(activity=discord.CustomActivity(name=STATUS))
+        print("Bot presence set.")
     except (discord.HTTPException, discord.ClientException, OSError) as e:
         print(f"Error in on_ready: {e}")
         traceback.print_exc()
@@ -89,22 +89,6 @@ async def post_server_count_periodically():
     while True:
         await post_server_count()
         await asyncio.sleep(1800)
-
-local_activities = [f"{VERSION} | /help", f"{VERSION} | /paul", f"{VERSION} | /source", f"{VERSION} | /invite"]
-
-@tasks.loop(seconds=30)
-async def update_presence_task():
-    for activity in local_activities:
-        try:
-            await client.change_presence(activity=discord.Streaming(name=activity, url=TWITCH_URL))
-            await asyncio.sleep(30)
-        except (discord.HTTPException, asyncio.TimeoutError):
-            await client.get_channel(LOG_CHANNEL).send("Failed to update presence. Retrying...")
-            await asyncio.sleep(60)
-
-@update_presence_task.before_loop
-async def before_update_presence():
-    await client.wait_until_ready()
 
 @client.event
 async def on_message(message):
